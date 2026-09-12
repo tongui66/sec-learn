@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0e8a6d">
+<title>MySQL 网安学习站 · 精通道 | SQL for Security</title>
+<style>
+:root{--bg:#f4f7f6;--card:#fff;--ink:#1f2937;--sub:#6b7280;--line:#e5e9e8;--brand:#0e8a6d;--brand2:#0a6b55;--accent:#f29111;--danger:#d9534f;--codebg:#0f2438;--codeink:#d8e6f0;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);padding-bottom:84px;line-height:1.7}
+header{background:linear-gradient(135deg,#0e8a6d,#0a6b55);color:#fff;padding:18px 18px 26px;border-radius:0 0 22px 22px}
+header h1{font-size:22px;font-weight:800;letter-spacing:1px}
+header .sub{font-size:12.5px;opacity:.85;margin-top:2px}
+.prog{float:right;text-align:right;font-size:20px;font-weight:800;margin-top:-6px}
+.prog small{display:block;font-size:10px;font-weight:400;opacity:.8}
+main{max-width:720px;margin:0 auto;padding:16px 14px}
+section{display:none;animation:fade .25s}
+section.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+h2.sec{font-size:17px;font-weight:800;margin:4px 0 12px;display:flex;align-items:center;gap:8px}
+.tag{display:inline-block;font-size:10.5px;padding:2px 9px;border-radius:20px;background:#e7f6f1;color:var(--brand);font-weight:700;margin-right:6px}
+.btn{display:inline-block;background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-size:15px;font-weight:700;cursor:pointer}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.warn{background:var(--accent)}
+.btn.sm{padding:7px 12px;font-size:13px;border-radius:9px}
+.bigbtn{display:block;text-align:center;width:100%}
+.road{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.road .stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.road .stage b{font-size:13px;display:block;margin-bottom:4px}
+.road .stage span{font-size:11.5px;color:var(--sub);line-height:1.5}
+.road .danger b{color:var(--danger)}
+.chlist{display:flex;flex-direction:column;gap:8px}
+.chitem{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.chitem:active{background:#f0faf6}
+.chitem .no{width:34px;height:34px;border-radius:10px;background:#e7f6f1;color:var(--brand);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.chitem.done .no{background:var(--brand);color:#fff}
+.chitem .tt{flex:1;min-width:0}
+.chitem .tt b{font-size:14.5px}
+.chitem .tt small{display:block;font-size:11px;color:var(--sub)}
+.chitem .st{font-size:10.5px;color:var(--brand);font-weight:700;white-space:nowrap}
+.chapter{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.chapter .crumb{font-size:11px;color:var(--sub);margin-bottom:6px}
+.chapter h2{font-size:18px;margin-bottom:8px}
+.chapter .intro{background:#eefaf6;border-left:4px solid var(--brand);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;color:#14532d}
+.chapter h3{font-size:15px;margin:16px 0 8px;padding-left:10px;border-left:4px solid var(--accent);color:#7c4a03}
+.chapter p{font-size:13.5px;margin-bottom:8px}
+.chapter ul,.chapter ol{margin:6px 0 10px 22px;font-size:13.5px}
+.chapter li{margin-bottom:4px}
+pre.code{background:var(--codebg);color:var(--codeink);border-radius:10px;padding:12px;overflow-x:auto;font-family:Consolas,"Courier New",monospace;font-size:12.5px;line-height:1.6;margin:10px 0;white-space:pre-wrap;word-break:break-word}
+pre.code .kw{color:#6ee7b7;font-weight:700}
+pre.code .st{color:#f9b85c}
+pre.code .cm{color:#8aa0b5;font-style:italic}
+pre.code .num{color:#7dd3fc}
+.secview{background:#fff8e6;border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#7c4a03}
+.secview b{color:#b45309}
+.warnbox{background:#fdeaea;border-left:4px solid var(--danger);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#7f1d1d}
+.warnbox b{color:#b91c1c}
+.tipbox{background:#eef7f0;border-left:4px solid #16a34a;border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#14532d}
+.tipbox b{color:#15803d}
+.notebox{background:#eef4fb;border-left:4px solid #3b82f6;border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#1e3a8a}
+.notebox b{color:#1d4ed8}
+table.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+table.tbl th{background:#e7f6f1;color:var(--brand2);padding:7px 9px;text-align:left;border:1px solid var(--line)}
+table.tbl td{padding:6px 9px;border:1px solid var(--line);vertical-align:top}
+.donebar{display:flex;gap:8px;margin-top:14px}
+.donebar .btn{flex:1}
+.qnav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.qnav span{min-width:38px;height:34px;padding:0 6px;border-radius:10px;background:#eef2f1;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;cursor:pointer;position:relative}
+.qnav span.on{background:var(--brand);color:#fff}
+.qnav span.allok{background:#dcfce7;color:#166534}
+.qnav span.hasbad{background:#fee2e2;color:#991b1b}
+.qnav span.on.allok,.qnav span.on.hasbad{outline:2px solid var(--brand);outline-offset:1px}
+.qhead{font-size:13px;color:var(--sub);margin-bottom:8px}
+.qitem{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.qitem .q{font-size:14.5px;font-weight:700;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;background:#f7faf9;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;margin-bottom:7px;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.opt:active{background:#eef6f2}
+.opt.right{background:#e6f7ec;border-color:#22c55e;color:#166534;font-weight:700}
+.opt.wrong{background:#fdeaea;border-color:#ef4444;color:#991b1b}
+.explain{display:none;background:#eefaf6;border-radius:9px;padding:10px 12px;font-size:13px;margin-top:8px;color:#14532d}
+.explain.show{display:block}
+.explain b{color:var(--brand)}
+.cs-cat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.cs-cat h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cs-item{padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.cs-item:last-child{border-bottom:none}
+.cs-item b{color:var(--brand2)}
+.cs-item .ex{display:block;color:var(--sub);font-size:12px;margin-top:2px;word-break:break-all}
+.envstep{display:flex;gap:12px;margin-bottom:12px}
+.envstep .n{width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.envstep .t{flex:1;font-size:13.5px}
+.envstep .t b{font-size:14px}
+#bottomNav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding:6px 0 calc(8px + env(safe-area-inset-bottom));z-index:50}
+#bottomNav div{flex:1;text-align:center;font-size:10.5px;color:var(--sub);padding:6px 0;cursor:pointer;border-radius:10px;margin:0 2px}
+#bottomNav div b{display:block;font-size:18px;margin-bottom:1px;font-weight:400}
+#bottomNav div.on{color:var(--brand);background:#e7f6f1;font-weight:700}
+.small{font-size:12px;color:var(--sub)}
+.center{text-align:center}
+.search{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;font-size:14px;margin-bottom:12px;background:#fff;color:var(--ink)}
+.search:focus{outline:none;border-color:var(--brand)}
+.snippet{font-size:12px;color:var(--sub);margin-top:4px;line-height:1.5}
+.snippet em{background:#fff3bf;font-style:normal;color:#7c4a03;font-weight:700}
+.statline{display:flex;gap:10px;text-align:center;margin-bottom:12px}
+.statline div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 6px}
+.statline b{display:block;font-size:19px;color:var(--brand)}
+.statline small{font-size:11px;color:var(--sub)}
+.lab{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.lab h4{font-size:15px;margin-bottom:6px}
+.lab .meta{font-size:11.5px;color:var(--sub);margin-bottom:8px}
+.lab .goal{font-size:13px;background:#eefaf6;border-radius:8px;padding:8px 10px;margin-bottom:10px;color:#14532d}
+.lab .step{display:flex;gap:9px;font-size:13px;margin-bottom:6px}
+.lab .step .n{width:22px;height:22px;border-radius:50%;background:#e7f6f1;color:var(--brand);font-weight:800;font-size:11.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
+details{margin-top:8px;font-size:13px}
+summary{cursor:pointer;font-weight:700;color:var(--brand);font-size:13px;padding:4px 0}
+.checkrow{display:flex;gap:10px;align-items:flex-start;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.checkrow:last-child{border-bottom:none}
+.checkrow .box{width:20px;height:20px;border:1.5px solid var(--line);border-radius:6px;flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent}
+.checkrow.on .box{background:#16a34a;border-color:#16a34a;color:#fff}
+.checkrow.on{color:var(--sub)}
+.gloss{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.gloss h4{font-size:14.5px;color:var(--brand2);margin-bottom:4px}
+.gloss .en{font-size:11.5px;color:var(--sub);font-weight:400}
+.gloss p{font-size:13px}
+.gloss .rel{font-size:11.5px;color:var(--sub);margin-top:5px}
+.pill{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:20px;background:#f2ece9;color:var(--sub);margin-right:5px}
+</style>
+</head>
+<body>
+<header>
+  <div class="prog"><span id="progNum">0/20</span><small>章已学</small></div>
+  <h1>🐬 MySQL 网安学习站</h1>
+  <div class="sub">SQL for Security · 零基础 → 查询 → 注入攻防 → 数据库加固</div>
+</header>
+
+<main>
+  <section id="home" class="on">
+    <div class="card">
+      <h2 class="sec">📌 今天学什么</h2>
+      <p id="todayTip" class="small">加载中…</p>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button class="btn bigbtn" onclick="gotoStudy()">📖 继续学习</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <button class="btn ghost bigbtn" onclick="checkin()">✅ 今日打卡</button>
+      </div>
+      <p class="small center" style="margin-top:8px">累计打卡 <b id="chkNum">0</b> 天 · 练习正确率 <b id="accNum">—</b></p>
+    </div>
+    <div class="card">
+      <h2 class="sec">🎯 从入门到精通：怎么用这个站</h2>
+      <div class="envstep"><div class="n">1</div><div class="t"><b>读一章（30 分钟）</b><br>重点不是背语法，是能说清「这条 SQL 如果被注入改写，会发生什么」。</div></div>
+      <div class="envstep"><div class="n">2</div><div class="t"><b>做题（15 分钟）</b><br>错题会自动进错题本。错在哪，就说明哪个概念只是"看着懂"。</div></div>
+      <div class="envstep"><div class="n">3</div><div class="t"><b>动手（30 分钟）</b><br>去「实验」页做当阶段实验。<b>SQL 是敲会的，不是看会的</b>——只看不练，一到真实库就写不出来。</div></div>
+      <div class="envstep"><div class="n">4</div><div class="t"><b>查手册（随时）</b><br>语法忘了查「速查」；概念忘了查「术语」；卡住了看「案例」里的推理过程。</div></div>
+      <div class="tipbox"><b>精通判据：</b>不是「背得出语法」，而是给你一个注入点你能判断类型、给你一张表你能把约束设计齐、给你一个库你能审计出风险并加固。首页底部的自测清单就是这张判据表。</div>
+    </div>
+    <div class="card">
+      <h2 class="sec">🏆 精通自测清单</h2>
+      <p class="small" style="margin-bottom:8px">能全部打勾，说明你已经到实战可用水平（点一下就能勾选）。</p>
+      <div id="mastery"></div>
+      <p class="small center" style="margin-top:10px">已完成 <b id="masteryNum">0/12</b></p>
+    </div>
+    <div class="card">
+      <h2 class="sec">🗺 学习路线图</h2>
+      <div class="road">
+        <div class="stage"><b>1-4 章 · 基础入门</b><span>数据库与安全全景、建库建表、类型与约束、增删改</span></div>
+        <div class="stage"><b>5-9 章 · 查询与性能</b><span>SELECT、条件排序分页、聚合分组、JOIN 与子查询、索引与 EXPLAIN</span></div>
+        <div class="stage"><b>10-12 章 · 事务与运维</b><span>事务隔离与锁、视图触发器、备份恢复</span></div>
+        <div class="stage danger"><b>13-20 章 · 攻防与加固</b><span>注入原理、UNION 拖库、盲注、文件读写提权、防御、权限、审计、案例</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="course">
+    <h2 class="sec">📚 课程（20 章）</h2>
+    <input class="search" id="searchBox" placeholder="🔍 搜索知识点，如 UNION、information_schema、EXPLAIN、死锁…" oninput="doSearch()">
+    <div id="searchResult"></div>
+    <div id="chDetail"></div>
+    <div class="chlist" id="chList"></div>
+  </section>
+
+  <section id="quiz">
+    <h2 class="sec">✍️ 章节练习</h2>
+    <div class="statline">
+      <div><b id="qDone">0</b><small>已答题目</small></div>
+      <div><b id="qAcc">—</b><small>正确率</small></div>
+      <div><b id="qBad">0</b><small>错题待复习</small></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn ghost sm" style="flex:1" onclick="showWrong()">❌ 只看错题</button>
+      <button class="btn ghost sm" style="flex:1" onclick="resetQuiz()">↺ 重置练习</button>
+    </div>
+    <div class="qnav" id="qnav"></div>
+    <div id="quizBody"></div>
+  </section>
+
+  <section id="lab">
+    <h2 class="sec">🧪 实验与靶场</h2>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn sm" id="tabLabs" style="flex:1" onclick="showLabTab('labs')">🧪 基础实验</button>
+      <button class="btn ghost sm" id="tabDvwa" style="flex:1" onclick="showLabTab('dvwa')">🎯 DVWA 靶场</button>
+    </div>
+    <div id="paneLabs">
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:10px">环境准备（10 分钟）</h3>
+      <div class="envstep"><div class="n">1</div><div class="t"><b>装 XAMPP</b><br>启动其中的 <b>MySQL</b>（和 Apache）。自带 phpMyAdmin 图形界面，零配置即可用。</div></div>
+      <div class="envstep"><div class="n">2</div><div class="t"><b>把 mysql 命令加进 PATH（关键一步）</b><br>XAMPP 装完 <b>mysql 命令默认不在 PATH</b>，直接敲会报「不是内部或外部命令」。要么先 <b>cd C:\xampp\mysql\bin</b>，要么把该目录加进系统 PATH。</div></div>
+      <div class="envstep"><div class="n">3</div><div class="t"><b>建练习库</b><br>在 <b>code</b> 文件夹执行 <b>mysql -u root &lt; init.sql</b>，建好 shop 库（用户 / 订单 / 商品表 + 测试数据）。后面的实验都拿它练。</div></div>
+      <div class="envstep"><div class="n">4</div><div class="t"><b>两个配套 SQL 文件</b><br><b>init.sql</b>：建库建表 + 造数据，所有实验的起点。<br><b>safe_queries.sql</b>：注入原理演示 + 加固练习，<b>只在你本地跑</b>。</div></div>
+      <div class="warnbox"><b>红线：</b>第 13-16 章的注入语句、文件读写演示，<b>只允许在你自己的本地 XAMPP / 靶场执行</b>。禁止对任何真实网站、学校系统、公司数据库做测试——无论出于什么目的。学攻击原理是为了写出打不动的代码。</div>
+    </div>
+      <div id="labList"></div>
+    </div>
+    <div id="paneDvwa" style="display:none">
+      <div class="tipbox"><b>为什么把 DVWA 单独列一页：</b>它自带 <b>Low / Medium / High / Impossible</b> 四个级别——<b>Impossible 就是安全写法</b>。所以你不用再另找靶场，就能走完「打穿 → 看源码 → 换个级别 → 看源码 → 打 Impossible 复测」的完整闭环。这正好补上文档式教程最大的短板：<b>看不到运行结果、也看不到修复后的样子</b>。</div>
+      <div id="dvwaList"></div>
+    </div>
+  </section>
+
+  <section id="cheatsheet">
+    <h2 class="sec">⚡ 速查表</h2>
+    <input class="search" id="csSearch" placeholder="🔍 查命令，如 GROUP_CONCAT、GRANT、secure_file_priv…" oninput="filterCS()">
+    <div id="csBody"></div>
+  </section>
+
+  <section id="gloss">
+    <h2 class="sec">📖 术语表</h2>
+    <input class="search" id="glSearch" placeholder="🔍 查术语，如 ACID、B+树、二次注入…" oninput="filterGloss()">
+    <div id="glBody"></div>
+  </section>
+</main>
+
+<nav id="bottomNav">
+  <div class="on" data-sec="home"><b>🏠</b>首页</div>
+  <div data-sec="course"><b>📚</b>课程</div>
+  <div data-sec="quiz"><b>✍️</b>练习</div>
+  <div data-sec="lab"><b>🧪</b>实验</div>
+  <div data-sec="cheatsheet"><b>⚡</b>速查</div>
+  <div data-sec="gloss"><b>📖</b>术语</div>
+</nav>
+
+<script src="data/chapters-a.js"></script>
+<script src="data/chapters-b.js"></script>
+<script src="data/chapters-c.js"></script>
+<script src="data/chapters-d.js"></script>
+<script src="data/chapters-e.js"></script>
+<script src="data/exercises.js"></script>
+<script src="data/labs.js"></script>
+<script src="data/dvwa.js"></script>
+<script src="data/cheatsheet.js"></script>
+<script src="data/glossary.js"></script>
+<script>
+/* ============ 基础工具 ============ */
+var LS = (function(){
+  var mem = {};
+  function get(k){ try{ var v = localStorage.getItem(k); return (v===null? (mem[k]===undefined?null:mem[k]) : v); }catch(e){ return mem[k]===undefined?null:mem[k]; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){ mem[k]=v; } }
+  return { get:get, set:set };
+})();
+function readJSON(key, def){
+  try{ var v = LS.get(key); if(!v) return def; var o = JSON.parse(v); return (o===null||o===undefined)?def:o; }
+  catch(e){ return def; }
+}
+function writeJSON(key, obj){ try{ LS.set(key, JSON.stringify(obj)); }catch(e){} }
+
+var ALL = [];
+[typeof CHAPTERS_A!=="undefined"?CHAPTERS_A:[],
+ typeof CHAPTERS_B!=="undefined"?CHAPTERS_B:[],
+ typeof CHAPTERS_C!=="undefined"?CHAPTERS_C:[],
+ typeof CHAPTERS_D!=="undefined"?CHAPTERS_D:[],
+ typeof CHAPTERS_E!=="undefined"?CHAPTERS_E:[]].forEach(function(m){ ALL = ALL.concat(m); });
+ALL.sort(function(a,b){ return a.id-b.id; });
+
+var readArr  = readJSON('mysql_read',  []);
+var chkArr   = readJSON('mysql_checkin', []);
+var quizRec  = readJSON('mysql_quiz', {});     // "章号_题号" -> 1 对 / 0 错
+var mastery  = readJSON('mysql_mastery', {});
+
+/* ============ 代码高亮（修正版：先保护字符串与注释，再做关键字着色） ============ */
+var KW = ['INFORMATION_SCHEMA','group_concat_max_len','secure_file_priv','SQL_SAFE_UPDATES','AUTO_INCREMENT',
+'SELECT','FROM','WHERE','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','DATABASE','ALTER','DROP','ADD','COLUMN',
+'PRIMARY','KEY','FOREIGN','REFERENCES','JOIN','LEFT','RIGHT','INNER','OUTER','CROSS','ON','AS','AND','OR','NOT','IN','LIKE','BETWEEN','IS','NULL',
+'ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','DISTINCT','COUNT','SUM','AVG','MIN','MAX','UNION','ALL','EXISTS','CASE','WHEN','THEN','ELSE','END','DESC','ASC',
+'USE','SHOW','DESCRIBE','INDEX','UNIQUE','DEFAULT','INT','BIGINT','TINYINT','VARCHAR','CHAR','TEXT','DECIMAL','FLOAT','DATE','DATETIME','TIMESTAMP',
+'BEGIN','COMMIT','ROLLBACK','START','TRANSACTION','GRANT','REVOKE','PRIVILEGES','FLUSH','EXPLAIN','IDENTIFIED','TO','WITH','CONSTRAINT','ENGINE','CHARSET','COLLATE','CASCADE',
+'VIEW','TRIGGER','PROCEDURE','FUNCTION','PREPARE','EXECUTE','DEALLOCATE','LOAD_FILE','OUTFILE','DUMPFILE','DUPLICATE','REPLACE','TRUNCATE','RENAME','MODIFY','CHECK','RETURNS','DETERMINISTIC','IGNORE'];
+var KWRE = new RegExp('\\b(' + KW.join('|') + ')\\b','gi');
+function hlSql(s){
+  if(!s) return '';
+  var store = [];
+  var t = String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  t = t.replace(/('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/g, function(m){
+    store.push('<span class="st">' + m + '</span>'); return '\u0001' + (store.length-1) + '\u0001';
+  });
+  t = t.replace(/(--[^\n]*|#[^\n]*|\/\*[\s\S]*?\*\/)/g, function(m){
+    store.push('<span class="cm">' + m + '</span>'); return '\u0001' + (store.length-1) + '\u0001';
+  });
+  t = t.replace(KWRE, '<span class="kw">$1</span>');
+  t = t.replace(/\b([a-z_][a-z0-9_]*)\s*\(/gi, function(m, name){
+    if(/^(span|class|div|pre)$/i.test(name)) return m;   // 不要碰已经插入的 HTML
+    return '<span class="fn">' + name + '</span>(';
+  });
+  t = t.replace(/\u0001(\d+)\u0001/g, function(_,i){ return store[+i]; });
+  return t;
+}
+
+/* ============ 渲染 ============ */
+function setSec(name){
+  document.querySelectorAll('main section').forEach(function(s){ s.classList.remove('on'); });
+  var el = document.getElementById(name); if(el) el.classList.add('on');
+  document.querySelectorAll('#bottomNav div').forEach(function(d){ d.classList.toggle('on', d.dataset.sec===name); });
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  document.getElementById('progNum').textContent = readArr.length + '/' + ALL.length;
+  document.getElementById('chkNum').textContent = chkArr.length;
+  document.getElementById('accNum').textContent = accText();
+  var next = firstUndone();
+  document.getElementById('todayTip').textContent = next
+    ? '下一站：第 ' + next.id + ' 章「' + next.title + '」（' + next.stage + '）。读完做 4 道题，再去做同阶段实验。'
+    : '🎉 20 章全部学完！现在去做「综合大实验」，然后用自测清单验收自己。';
+  renderMastery();
+}
+function firstUndone(){
+  for(var i=0;i<ALL.length;i++){ if(readArr.indexOf(ALL[i].id)<0) return ALL[i]; }
+  return null;
+}
+function accText(){
+  var keys = Object.keys(quizRec);
+  if(!keys.length) return '—';
+  var ok = 0; keys.forEach(function(k){ if(quizRec[k]===1) ok++; });
+  return Math.round(ok/keys.length*100) + '%';
+}
+function checkin(){
+  var t = new Date();
+  var today = t.getFullYear() + '-' + (t.getMonth()+1) + '-' + t.getDate();
+  if(chkArr.indexOf(today) < 0){ chkArr.push(today); writeJSON('mysql_checkin', chkArr); }
+  document.getElementById('chkNum').textContent = chkArr.length;
+  alert('✅ 打卡成功！累计 ' + chkArr.length + ' 天');
+}
+
+var MASTERY = [
+'能说清数据库在攻防链里的位置，以及注入、权限、备份、审计这四条防线各防什么',
+'能独立设计一张表：选对类型（金额用 DECIMAL）、加齐约束（PK/NOT NULL/UNIQUE/FK/CHECK）',
+'能手写多表 JOIN 与子查询，并解释 INNER 和 LEFT 的结果差异',
+'能用 EXPLAIN 判断一条查询走没走索引，并说出哪几种写法会让索引失效',
+'能讲清事务的 ACID，以及四种隔离级别各自解决什么并发问题',
+'能复现一次死锁，并用 SHOW ENGINE INNODB STATUS 读懂死锁日志',
+'能用 mysqldump 完成备份并成功恢复，并说出备份策略的三个必答问题',
+'能判断注入点是字符型还是数字型，并完成闭合与注释绕过（仅本地靶场）',
+'能用 information_schema 枚举库 / 表 / 列，完成 UNION 注入拖库',
+'能说清布尔盲注与时间盲注的差异，并解释没有回显时靠什么判断',
+'能讲清 LOAD_FILE 与 INTO OUTFILE 的危害前提（FILE 权限 + secure_file_priv），以及它为什么能升级成 getshell',
+'能对一个真实站点的库做加固审计：最小权限、危险权限收回、不绑公网、日志与备份全部落地'
+];
+function renderMastery(){
+  var box = document.getElementById('mastery');
+  if(!box || box.dataset.ready) { 
+    var n = 0; MASTERY.forEach(function(_,i){ if(mastery[i]) n++; });
+    if(box) document.getElementById('masteryNum').textContent = n + '/' + MASTERY.length;
+    return;
+  }
+  var h = '';
+  MASTERY.forEach(function(_,i){
+    h += '<div class="checkrow ' + (mastery[i]?'on':'') + '" onclick="toggleMastery(' + i + ')"><div class="box">✓</div><div>' + MASTERY[i] + '</div></div>';
+  });
+  box.innerHTML = h; box.dataset.ready = '1';
+  var n = 0; MASTERY.forEach(function(_,i){ if(mastery[i]) n++; });
+  document.getElementById('masteryNum').textContent = n + '/' + MASTERY.length;
+}
+function toggleMastery(i){
+  mastery[i] = mastery[i] ? 0 : 1;
+  writeJSON('mysql_mastery', mastery);
+  var rows = document.querySelectorAll('#mastery .checkrow');
+  if(rows[i]) rows[i].classList.toggle('on', !!mastery[i]);
+  var n = 0; MASTERY.forEach(function(_,k){ if(mastery[k]) n++; });
+  document.getElementById('masteryNum').textContent = n + '/' + MASTERY.length;
+}
+
+function renderCourse(){
+  var box = document.getElementById('chList'); var h = '';
+  ALL.forEach(function(c){
+    var done = readArr.indexOf(c.id) >= 0;
+    var qn = (typeof EXERCISES!=="undefined" && EXERCISES[c.id]) ? EXERCISES[c.id].length : 0;
+    h += '<div class="chitem ' + (done?'done':'') + '" onclick="renderChapter(' + c.id + ')">'
+      + '<div class="no">' + (done?'✓':c.id) + '</div>'
+      + '<div class="tt"><b>' + c.id + '. ' + c.title + '</b><small>' + c.stage + ' · ' + c.sections.length + ' 节 · ' + qn + ' 题</small></div>'
+      + '<div class="st">' + (done?'已学':'开始 →') + '</div></div>';
+  });
+  box.innerHTML = h;
+}
+function renderChapter(id){
+  var c = null;
+  ALL.forEach(function(x){ if(x.id===id) c = x; });
+  if(!c) return;
+  var h = '<div class="chapter"><div class="crumb"><a href="javascript:void(0)" onclick="backToList()">← 课程列表</a> · 第 ' + c.id + ' 章</div>'
+    + '<h2>' + c.id + '. ' + c.title + '</h2>'
+    + '<div class="intro">' + c.intro + '</div>';
+  c.sections.forEach(function(s){
+    if(s.h) h += '<h3>' + s.h + '</h3>';
+    (s.p||[]).forEach(function(p){ h += '<p>' + p + '</p>'; });
+    (s.code||[]).forEach(function(cd){ h += '<pre class="code">' + hlSql(cd) + '</pre>'; });
+    if(s.ul){ h += '<ul>' + s.ul.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul>'; }
+    if(s.ol){ h += '<ol>' + s.ol.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ol>'; }
+    if(s.tbl){
+      h += '<table class="tbl"><tr>' + s.tbl[0].map(function(x){ return '<th>' + x + '</th>'; }).join('') + '</tr>'
+        + s.tbl.slice(1).map(function(r){ return '<tr>' + r.map(function(x){ return '<td>' + x + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>';
+    }
+    if(s.note) h += '<div class="notebox"><b>📎 补充：</b>' + s.note + '</div>';
+    if(s.warn) h += '<div class="warnbox"><b>⚠️ 注意：</b>' + s.warn + '</div>';
+    if(s.tip)  h += '<div class="tipbox"><b>💡 提示：</b>' + s.tip + '</div>';
+  });
+  if(c.secview) h += '<div class="secview"><b>🛡 安全视角：</b>' + c.secview + '</div>';
+  h += '<div class="donebar"><button class="btn" onclick="markDone(' + c.id + ')">✅ 学完了</button>'
+    + '<button class="btn ghost" onclick="doQuiz(' + c.id + ')">✍️ 做本章练习</button></div></div>';
+  document.getElementById('chDetail').innerHTML = h;
+  document.getElementById('chList').style.display = 'none';
+  document.getElementById('searchResult').innerHTML = '';
+  window.scrollTo(0,0);
+}
+function backToList(){
+  document.getElementById('chDetail').innerHTML = '';
+  document.getElementById('chList').style.display = '';
+  window.scrollTo(0,0);
+}
+function markDone(id){
+  if(readArr.indexOf(id) < 0){ readArr.push(id); writeJSON('mysql_read', readArr); }
+  renderHome(); renderCourse(); renderChapter(id);
+}
+function gotoStudy(){
+  var c = firstUndone();
+  if(!c){ setSec('course'); return; }
+  renderChapter(c.id); setSec('course');
+}
+
+/* ============ 搜索 ============ */
+function plain(t){
+  return String(t||'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+}
+function chapText(c){
+  var parts = [c.title, plain(c.intro), plain(c.secview)];
+  c.sections.forEach(function(s){
+    if(s.h) parts.push(plain(s.h));
+    (s.p||[]).forEach(function(x){ parts.push(plain(x)); });
+    if(s.ul) s.ul.forEach(function(x){ parts.push(plain(x)); });
+    if(s.ol) s.ol.forEach(function(x){ parts.push(plain(x)); });
+    if(s.tbl) s.tbl.forEach(function(r){ r.forEach(function(x){ parts.push(plain(x)); }); });
+    (s.code||[]).forEach(function(x){ parts.push(plain(x)); });
+    ['note','warn','tip'].forEach(function(k){ if(s[k]) parts.push(plain(s[k])); });
+  });
+  return parts.join(' \n ');
+}
+var IDX = null;
+function buildIndex(){
+  if(IDX) return IDX;
+  IDX = ALL.map(function(c){ return { c:c, t:chapText(c) }; });
+  return IDX;
+}
+function doSearch(){
+  var q = document.getElementById('searchBox').value.trim();
+  var box = document.getElementById('searchResult');
+  if(!q){ box.innerHTML = ''; document.getElementById('chList').style.display=''; document.getElementById('chDetail').innerHTML=''; return; }
+  if(document.getElementById('chDetail').innerHTML){ document.getElementById('chDetail').innerHTML=''; document.getElementById('chList').style.display='none'; }
+  var idx = buildIndex();
+  var ql = q.toLowerCase();
+  var hits = [];
+  idx.forEach(function(row){
+    var pos = row.t.toLowerCase().indexOf(ql);
+    if(pos >= 0){
+      var start = Math.max(0, pos-28);
+      var seg = row.t.substr(start, 110).replace(/\n/g,' ');
+      seg = seg.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; });
+      var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','ig');
+      hits.push({ c:row.c, snip:seg.replace(re,'<em>$1</em>') });
+    }
+  });
+  if(!hits.length){ box.innerHTML = '<div class="card"><p class="small">没有匹配「' + q.replace(/[<>]/g,'') + '」的内容，换个关键词试试（例如 UNION / information_schema / EXPLAIN / 死锁）。</p></div>'; return; }
+  var h = '<p class="small" style="margin-bottom:8px">命中 ' + hits.length + ' 章：</p>';
+  hits.forEach(function(x){
+    h += '<div class="chitem" onclick="document.getElementById(\'searchBox\').value=\'\';renderChapter(' + x.c.id + ')">'
+      + '<div class="no">' + x.c.id + '</div><div class="tt"><b>' + x.c.title + '</b>'
+      + '<div class="snippet">…' + x.snip + '…</div></div><div class="st">打开 →</div></div>';
+  });
+  box.innerHTML = h;
+}
+
+/* ============ 练习 ============ */
+function renderQuizNav(){
+  var h = '';
+  ALL.forEach(function(c){
+    var list = (typeof EXERCISES!=="undefined" && EXERCISES[c.id]) ? EXERCISES[c.id] : [];
+    var ok = 0, bad = 0;
+    list.forEach(function(_,i){ var v = quizRec[c.id + '_' + i]; if(v===1) ok++; else if(v===0) bad++; });
+    var cls = '';
+    if(list.length && ok + bad === list.length && bad === 0) cls = 'allok';
+    else if(bad > 0) cls = 'hasbad';
+    h += '<span class="' + cls + '" data-ch="' + c.id + '" onclick="doQuiz(' + c.id + ')">' + c.id + '</span>';
+  });
+  document.getElementById('qnav').innerHTML = h;
+  updateQuizStats();
+}
+function updateQuizStats(){
+  var keys = Object.keys(quizRec), ok = 0, bad = 0;
+  keys.forEach(function(k){ if(quizRec[k]===1) ok++; else bad++; });
+  document.getElementById('qDone').textContent = keys.length;
+  document.getElementById('qAcc').textContent = keys.length ? Math.round(ok/keys.length*100) + '%' : '—';
+  document.getElementById('qBad').textContent = bad;
+  var el = document.getElementById('accNum'); if(el) el.textContent = accText();
+}
+function doQuiz(id){
+  if(!document.getElementById('qnav').innerHTML) renderQuizNav();
+  document.querySelectorAll('#qnav span').forEach(function(s){ s.classList.toggle('on', parseInt(s.dataset.ch) === id); });
+  var list = (typeof EXERCISES!=="undefined" && EXERCISES[id]) ? EXERCISES[id] : [];
+  var h = '<div class="qhead">第 ' + id + ' 章练习 · 共 ' + list.length + ' 题（选完立即出解析；答案会记录，可随时看错题）</div>';
+  list.forEach(function(q,i){
+    var rec = quizRec[id + '_' + i];
+    h += '<div class="qitem" data-ch="' + id + '" data-i="' + i + '"><div class="q">' + (i+1) + '. ' + q.q + '</div>';
+    q.options.forEach(function(o,j){
+      h += '<button class="opt" data-j="' + j + '" onclick="pickOpt(this,' + id + ',' + i + ',' + j + ')">' + String.fromCharCode(65+j) + '. ' + o + '</button>';
+    });
+    h += '<div class="explain"' + (rec!==undefined?' style="display:block"':'') + '><b>解析：</b>' + q.explain + '</div></div>';
+  });
+  document.getElementById('quizBody').innerHTML = h;
+  list.forEach(function(q,i){
+    var rec = quizRec[id + '_' + i];
+    if(rec !== undefined) paintItem(id, i, rec===1 ? q.answer : -1, q.answer, true);
+  });
+  setSec('quiz');
+}
+function paintItem(id, i, clicked, answer, silent){
+  var item = document.querySelector('.qitem[data-ch="' + id + '"][data-i="' + i + '"]');
+  if(!item) return;
+  item.querySelectorAll('.opt').forEach(function(o,idx){
+    o.disabled = true;
+    if(idx === answer) o.classList.add('right');
+    else if(idx === clicked) o.classList.add('wrong');
+  });
+  item.querySelector('.explain').classList.add('show');
+}
+function pickOpt(btn, ch, i, j){
+  var q = EXERCISES[ch][i];
+  var key = ch + '_' + i;
+  if(quizRec[key] !== undefined) return;
+  quizRec[key] = (j === q.answer) ? 1 : 0;
+  writeJSON('mysql_quiz', quizRec);
+  paintItem(ch, i, j, q.answer);
+  renderQuizNav();
+}
+function showWrong(){
+  var h = '<div class="qhead">错题本 · 按章节列出你答错过的题</div>';
+  var found = 0;
+  ALL.forEach(function(c){
+    var list = (typeof EXERCISES!=="undefined" && EXERCISES[c.id]) ? EXERCISES[c.id] : [];
+    var rows = '';
+    list.forEach(function(q,i){
+      if(quizRec[c.id + '_' + i] === 0){
+        found++;
+        rows += '<div class="qitem"><div class="q">' + q.q + '</div>'
+          + '<div style="font-size:13px;color:#166534;margin-bottom:4px">✅ 正确答案：' + String.fromCharCode(65+q.answer) + '. ' + q.options[q.answer] + '</div>'
+          + '<div class="explain show"><b>解析：</b>' + q.explain + '</div></div>';
+      }
+    });
+    if(rows) h += '<div class="card"><h2 class="sec">第 ' + c.id + ' 章 · ' + c.title + '</h2>' + rows
+      + '<button class="btn ghost sm" onclick="doQuiz(' + c.id + ')">重做本章 →</button></div>';
+  });
+  if(!found) h += '<div class="card"><p class="small">还没有错题。先去「练习」做几章，答错的题会自动收到这里。</p></div>';
+  document.getElementById('quizBody').innerHTML = h;
+  document.querySelectorAll('#qnav span').forEach(function(s){ s.classList.remove('on'); });
+  setSec('quiz');
+}
+function resetQuiz(){
+  if(!confirm('确定清空所有作答记录和错题吗？')) return;
+  quizRec = {}; writeJSON('mysql_quiz', quizRec);
+  renderQuizNav(); document.getElementById('quizBody').innerHTML = '';
+  updateQuizStats();
+}
+
+/* ============ 实验 ============ */
+function renderLabs(){
+  var box = document.getElementById('labList');
+  if(typeof LABS === 'undefined') return;
+  var h = '';
+  LABS.forEach(function(l){
+    h += '<div class="lab"><h4>' + l.title + '</h4><div class="meta">' + l.meta + '</div>'
+      + '<div class="goal"><b>目标：</b>' + l.goal + '</div>';
+    if(l.env) h += '<p class="small" style="margin-bottom:8px"><b>环境：</b>' + l.env + '</p>';
+    if(l.steps){
+      h += '<div style="margin-top:6px">';
+      l.steps.forEach(function(s,i){ h += '<div class="step"><div class="n">' + (i+1) + '</div><div>' + s + '</div></div>'; });
+      h += '</div>';
+    }
+    if(l.code) h += '<pre class="code">' + hlSql(l.code) + '</pre>';
+    if(l.verify) h += '<details><summary>✅ 怎么算成功（验证方法）</summary><ul style="margin:6px 0 0 20px">'
+      + l.verify.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(l.undo) h += '<details><summary>↩ 怎么恢复（回滚）</summary><ul style="margin:6px 0 0 20px">'
+      + l.undo.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(l.why) h += '<details><summary>🎓 这个实验在教你什么</summary><p style="margin-top:6px">' + l.why + '</p></details>';
+    if(l.warn) h += '<div class="warnbox"><b>⚠️ 注意：</b>' + l.warn + '</div>';
+    if(l.tip) h += '<div class="tipbox"><b>💡 提示：</b>' + l.tip + '</div>';
+    h += '</div>';
+  });
+  box.innerHTML = h;
+}
+
+/* ============ DVWA 靶场手册 ============ */
+function showLabTab(which){
+  document.getElementById('paneLabs').style.display = (which === 'labs') ? '' : 'none';
+  document.getElementById('paneDvwa').style.display = (which === 'dvwa') ? '' : 'none';
+  document.getElementById('tabLabs').className = 'btn sm' + (which === 'labs' ? '' : ' ghost');
+  document.getElementById('tabDvwa').className = 'btn sm' + (which === 'dvwa' ? '' : ' ghost');
+  if(which === 'dvwa' && !document.getElementById('dvwaList').innerHTML) renderDvwa();
+  window.scrollTo(0,0);
+}
+function renderDvwa(){
+  var box = document.getElementById('dvwaList');
+  if(typeof DVWA === 'undefined' || !box) return;
+  var h = '';
+  DVWA.forEach(function(d){
+    h += '<div class="lab"><h4>' + d.title + '</h4><div class="meta">' + d.meta + '</div>'
+      + '<div class="goal"><b>目标：</b>' + d.goal + '</div>';
+    if(d.chapters) h += '<p class="small" style="margin-bottom:8px"><b>🔗 ' + d.chapters + '</b></p>';
+    if(d.steps){
+      h += '<div style="margin-top:6px">';
+      d.steps.forEach(function(s,i){ h += '<div class="step"><div class="n">' + (i+1) + '</div><div>' + s + '</div></div>'; });
+      h += '</div>';
+    }
+    if(d.code) h += '<pre class="code">' + hlSql(d.code) + '</pre>';
+    if(d.expect) h += '<details open><summary>👀 你应该看到什么（预期现象）</summary><ul style="margin:6px 0 0 20px">'
+      + d.expect.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(d.undo) h += '<details><summary>↩ 怎么恢复</summary><ul style="margin:6px 0 0 20px">'
+      + d.undo.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(d.why) h += '<details><summary>🎓 这个模块在教你什么</summary><p style="margin-top:6px">' + d.why + '</p></details>';
+    if(d.warn) h += '<div class="warnbox"><b>⚠️ 注意：</b>' + d.warn + '</div>';
+    if(d.tip) h += '<div class="tipbox"><b>💡 提示：</b>' + d.tip + '</div>';
+    h += '</div>';
+  });
+  box.innerHTML = h;
+}
+
+/* ============ 速查 ============ */
+function renderCS(){
+  if(typeof CHEATSHEET === 'undefined') return;
+  var h = '';
+  CHEATSHEET.forEach(function(cat){
+    h += '<div class="cs-cat" data-cat="' + cat.title + '"><h3>' + cat.icon + ' ' + cat.title + '</h3>';
+    cat.items.forEach(function(it){
+      h += '<div class="cs-item" data-k="' + (it.k + ' ' + (it.v||'') + ' ' + (it.ex||'')).replace(/"/g,'') + '"><b>' + it.k + '</b>'
+        + (it.v ? (' — ' + it.v) : '') + (it.ex ? '<span class="ex">例：' + it.ex + '</span>' : '') + '</div>';
+    });
+    h += '</div>';
+  });
+  document.getElementById('csBody').innerHTML = h;
+}
+function filterCS(){
+  var q = document.getElementById('csSearch').value.trim().toLowerCase();
+  document.querySelectorAll('#csBody .cs-item').forEach(function(el){
+    el.style.display = (!q || el.dataset.k.toLowerCase().indexOf(q) >= 0) ? '' : 'none';
+  });
+  document.querySelectorAll('#csBody .cs-cat').forEach(function(cat){
+    var vis = 0;
+    cat.querySelectorAll('.cs-item').forEach(function(el){ if(el.style.display !== 'none') vis++; });
+    cat.style.display = vis ? '' : 'none';
+  });
+}
+
+/* ============ 术语 ============ */
+function renderGloss(){
+  if(typeof GLOSSARY === 'undefined') return;
+  var h = '';
+  GLOSSARY.forEach(function(g){
+    h += '<div class="gloss" data-k="' + (g.term + ' ' + (g.en||'') + ' ' + g.def).replace(/"/g,'') + '">'
+      + '<h4>' + g.term + ' <span class="en">' + (g.en||'') + '</span></h4>'
+      + '<p>' + g.def + '</p>'
+      + (g.rel ? '<div class="rel">🔗 ' + g.rel + '</div>' : '') + '</div>';
+  });
+  document.getElementById('glBody').innerHTML = h;
+}
+function filterGloss(){
+  var q = document.getElementById('glSearch').value.trim().toLowerCase();
+  document.querySelectorAll('#glBody .gloss').forEach(function(el){
+    el.style.display = (!q || el.dataset.k.toLowerCase().indexOf(q) >= 0) ? '' : 'none';
+  });
+}
+
+/* ============ 启动 ============ */
+document.querySelectorAll('#bottomNav div').forEach(function(d){
+  d.addEventListener('click', function(){
+    var s = d.dataset.sec;
+    if(s === 'quiz' && !document.getElementById('qnav').innerHTML) renderQuizNav();
+    if(s === 'lab' && !document.getElementById('labList').innerHTML) renderLabs();
+    if(s === 'cheatsheet' && !document.getElementById('csBody').innerHTML) renderCS();
+    if(s === 'gloss' && !document.getElementById('glBody').innerHTML) renderGloss();
+    setSec(s);
+  });
+});
+renderHome();
+renderCourse();
+renderQuizNav();
+</script>
+</body>
+</html>

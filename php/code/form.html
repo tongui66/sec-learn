@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>登录表单（第 7 章示例）</title>
+</head>
+<body>
+<h2>登录表单</h2>
+<!-- 第 7 章：GET / POST 传参对比 -->
+<form method="POST" action="login.php">
+    用户名：<input type="text" name="username"><br><br>
+    密码：<input type="password" name="password"><br><br>
+    <input type="submit" value="登录">
+</form>
+
+<p>也可以直接用 GET 试试：<a href="login.php?username=admin&password=123">login.php?username=admin&amp;password=123</a></p>
+<p>注意：GET 参数会出现在地址栏、浏览器历史、服务器日志里——但 POST 也一样能被抓包改。</p>
+</body>
+</html>
