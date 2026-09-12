@@ -53,7 +53,7 @@ code{background:#f1f2f4;border-radius:4px;padding:1px 5px;font-family:Consolas,m
 
 <header>
   <h1>🛡 网安学习台</h1>
-  <div class="sub">防火墙 · MySQL · PHP 代码审计——三门课，一个入口</div>
+  <div class="sub">防火墙 · MySQL · PHP 代码审计 · Python 代码审计——四门课，一个入口</div>
   <div class="total">
     <div class="num"><span id="allDone">0</span><small> / <span id="allTotal">0</span> 章已学</small></div>
     <div class="bar"><i id="allBar" style="width:0%"></i></div>
@@ -87,6 +87,7 @@ code{background:#f1f2f4;border-radius:4px;padding:1px 5px;font-family:Consolas,m
     <h2>📱 手机上能做什么</h2>
     <ul>
       <li><b>随时可以</b>：看课程、做练习、查速查表和术语表、看实验步骤——只要打开这一个链接。</li>
+      <li><b>随时可以</b>：Python 课的全部实验都能在手机上看，代码在电脑上用 <code>py</code> 跑。</li>
       <li><b>需要在家里的网络</b>：真正跑 PHP 代码、打 DVWA 靶场。因为靶场跑在你家虚拟机上（192.168.11.133），外出时连不上。</li>
       <li><b>建议加到主屏幕</b>：浏览器菜单里选「添加到主屏幕」，以后一点就开，像 App 一样。</li>
       <li><b>进度记得同步</b>：在手机上学的进度不会自动出现在电脑上，用上面的导出/导入。</li>
@@ -101,6 +102,8 @@ code{background:#f1f2f4;border-radius:4px;padding:1px 5px;font-family:Consolas,m
     </div>
     <ul>
       <li><b>绝对不要</b>把这个文件夹部署到任何<b>会执行 PHP 的虚拟主机</b>上——那等于把一台公开的靶机挂在网上。</li>
+      <li><b><code>python/code/</code> 里也有「故意有漏洞」的 Python 示例</b>（命令注入、反序列化、SSTI、路径穿越）。
+          它们同样只是源码文本，但<b>只允许在你自己的电脑、自己的虚拟环境里运行</b>——用 <code>py 文件名.py</code>。</li>
       <li>所有 payload 只能在你自己的虚拟机 / DVWA / 本地靶场里跑。</li>
       <li>严禁对任何未授权的真实系统做测试——学校网站、公司系统、公网任意站点都不行，不管有没有造成损失。</li>
     </ul>
@@ -110,7 +113,7 @@ code{background:#f1f2f4;border-radius:4px;padding:1px 5px;font-family:Consolas,m
     <h2>🔧 部署与更新说明</h2>
     <ol>
       <li>这套站点是<b>纯静态</b>的（没有后端、没有外部依赖），已部署在 GitHub Pages：<code>tongui66.github.io/sec-learn/</code>。</li>
-      <li>三个子目录：<code>firewall/</code>（防火墙）、<code>mysql/</code>（MySQL）、<code>php/</code>（PHP）。本页是总入口。</li>
+      <li>四个子目录：<code>firewall/</code>（防火墙）、<code>mysql/</code>（MySQL）、<code>php/</code>（PHP）、<code>python/</code>（Python）。本页是总入口。</li>
       <li>以后更新：在课程目录执行 <code>git add -A &amp;&amp; git commit &amp;&amp; git push</code>，GitHub 会自动重新构建。进度数据不受影响（它存在浏览器里，不在文件里）。</li>
     </ol>
   </div>
@@ -126,6 +129,8 @@ var COURSES = [
     desc:'基础与查询 → 注入攻防 → 权限与加固。含 12 个实验 + 8 个 DVWA 靶场模块。' },
   { dir:'php', name:'PHP 代码审计', icon:'🐘', color:'#6f5bd6', key:'php', ch:24,
     desc:'语言基础 → 七大漏洞 → 审计工程 → 实战交付。含 12 个实验 + 8 个靶场模块 + 15 个可运行示例。' }
+  ,{ dir:'python', name:'Python 代码审计', icon:'🐍', color:'#3776ab', key:'py', ch:20,
+    desc:'语言基础 → 标准库与工程 → 四类高危漏洞 → 实战与报告。含 12 个实验 + 10 段审计靶场 + 14 个可运行示例。' }
 ];
 
 function $(id){ return document.getElementById(id); }
@@ -169,7 +174,7 @@ function render(){
   $('allBar').style.width = (allTotal ? Math.round(allDone / allTotal * 100) : 0) + '%';
   $('allTip').textContent = allDone === 0
     ? '还没开始——从下面任意一门进去，学完一章会自动记录进度。'
-    : '三门课合计已学 ' + allDone + ' 章，继续加油。';
+    : '四门课合计已学 ' + allDone + ' 章，继续加油。';
 }
 
 /* ── 进度导出 / 导入 ── */
@@ -177,7 +182,7 @@ function exportProgress(){
   var out = {};
   for (var i = 0; i < localStorage.length; i++){
     var k = localStorage.key(i);
-    if (/^(fw_|mysql_|php_)/.test(k)) out[k] = localStorage.getItem(k);
+    if (/^(fw_|mysql_|php_|py_)/.test(k)) out[k] = localStorage.getItem(k);
   }
   if (!Object.keys(out).length){ toast('本机还没有任何学习进度'); return; }
   var payload = { app:'网安学习台', version:1, exportedAt:new Date().toISOString(), data:out };
@@ -193,7 +198,7 @@ function importProgress(){
   if (!obj || !obj.data || typeof obj.data !== 'object'){ toast('这段文本里没有进度数据'); return; }
   var n = 0;
   Object.keys(obj.data).forEach(function(k){
-    if (/^(fw_|mysql_|php_)/.test(k)){ localStorage.setItem(k, obj.data[k]); n++; }
+    if (/^(fw_|mysql_|php_|py_)/.test(k)){ localStorage.setItem(k, obj.data[k]); n++; }
   });
   toast('已导入 ' + n + ' 项进度，页面即将刷新');
   setTimeout(function(){ location.reload(); }, 1200);
@@ -219,7 +224,7 @@ function clearAll(){
   var ks = [];
   for (var i = 0; i < localStorage.length; i++){
     var k = localStorage.key(i);
-    if (/^(fw_|mysql_|php_)/.test(k)) ks.push(k);
+    if (/^(fw_|mysql_|php_|py_)/.test(k)) ks.push(k);
   }
   ks.forEach(function(k){ localStorage.removeItem(k); });
   toast('已清空 ' + ks.length + ' 项，页面即将刷新');
