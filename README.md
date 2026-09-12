@@ -2,6 +2,8 @@
 
 三门自学课程的统一入口，纯静态站点（无后端、无外部依赖），可以部署到任意静态托管平台，手机 / 平板随时访问。
 
+**已部署地址：<https://tongui66.github.io/sec-learn/>**
+
 ## 包含什么
 
 | 目录 | 课程 | 规模 |
@@ -12,28 +14,34 @@
 
 `index.html`（根目录）是总入口：显示三门课的进度，并提供**进度导出 / 导入**（用于手机和电脑之间同步）。
 
-## 部署到 Cloudflare Pages（推荐，5 分钟）
+## 怎么访问
 
-1. 打开 https://dash.cloudflare.com/ ，注册或登录（免费账号即可）。
-2. 左侧选 **Workers & Pages** → **Create** → **Pages** → **Upload assets**。
-3. 项目名随便填（例如 `sec-learn`）。
-4. 把**这个文件夹整个拖进去**（或上传打包好的 zip）。
-5. 点 **Deploy**，几十秒后会给你一个 `https://xxx.pages.dev` 的网址。
+**手机 / 平板**：浏览器打开 <https://tongui66.github.io/sec-learn/>，然后在浏览器菜单里选「添加到主屏幕」，以后一点就开，像 App 一样。
 
-之后手机浏览器打开这个网址，菜单里选「添加到主屏幕」，就变成一个图标了。
+**电脑**：直接打开本地的 `index.html`，或者访问上面这个网址。两边进度独立，用总入口页的「导出/导入」同步。
 
-## 部署到 GitHub Pages
+## 怎么更新内容
 
-1. 新建一个 **public** 仓库（免费账号的 Pages 只支持公开仓库）。
-2. 把本文件夹里的所有文件上传到仓库根目录（网页版拖拽即可，不用装 git）。
-3. 仓库 **Settings → Pages** → Source 选 `Deploy from a branch` → 分支选 `main`、目录选 `/ (root)` → Save。
-4. 等一两分钟，访问 `https://你的用户名.github.io/仓库名/`。
+课程有更新时，在本目录执行：
 
-> 国内访问 `github.io` 经常较慢甚至打不开，如果主要在国内用手机看，**Cloudflare Pages 的体验会好很多**。
+```bash
+git add -A
+git commit -m "更新课程内容"
+git push
+```
 
-## 更新内容
+推送后 GitHub 会自动重新构建，一两分钟后刷新页面即可看到新内容。**学习进度不会丢**——它存在浏览器本地（localStorage），不在这些文件里。
 
-以后课程有更新，把新的文件夹重新上传覆盖即可。**进度数据不会丢**——它存在浏览器本地（localStorage），不在这些文件里。
+> 提示：本仓库已单独关闭 git 代理（`http.proxy` 为空），因为全局代理 `127.0.0.1:7993` 未运行会导致推送失败。
+
+## 备选：部署到 Cloudflare Pages
+
+如果哪天想换一个国内访问更快的地址，可以：
+
+1. 打开 <https://dash.cloudflare.com/> 登录（注意：新账号可能需要先完成邮箱验证才能部署）。
+2. 左侧 **Workers & Pages** → **Create** → **Pages** → **Upload assets**。
+3. 项目名随便填，把本文件夹整个拖进去，点 **Deploy**。
+4. 得到 `https://xxx.pages.dev` 网址。
 
 ## 进度同步（手机 ↔ 电脑）
 
