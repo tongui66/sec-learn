@@ -260,11 +260,12 @@ pre.code b.no{color:#fca5a5;font-weight:700}
       <h3 style="font-size:15px;margin-bottom:8px">先看清主次：哪一级要背、哪一级只要认</h3>
       <table class="tbl">
         <tr><th>级别</th><th>词数</th><th>要求</th><th>怎么用</th></tr>
-        <tr><td><b>⭐ 必背</b></td><td>300</td><td><b>会读、会写、会用</b></td><td>写作和翻译要能主动用出来；听力阅读必须秒反应</td></tr>
+        <tr><td><b>⭐ 必背</b></td><td>300</td><td><b>会读、会写、会用</b></td><td>再分两小类：<b>✍️ 写译必写 145</b>（作文翻译要主动用出来）+ <b>👂 阅读听力 155</b>（认得就行）</td></tr>
         <tr><td><b>🔹 认识</b></td><td>300</td><td><b>看到 / 听到能反应出意思</b></td><td>阅读听力里认得即可，<b>不要求会拼写、不要求会造句</b></td></tr>
         <tr><td><b>▪️ 了解</b></td><td>205</td><td><b>知道大概方向就行</b></td><td>低频、偏难的词。<b>不是拿来背的</b>，看到能猜出是褒是贬、是名词还是动词就够</td></tr>
       </table>
       <div class="tipbox"><b>为什么这样分？</b>四级要的是「有限时间内读懂听懂」，<b>不是词汇量大比拼</b>。<br>· 必背的 300 词：<b>每天滚一组，10 天一轮，反复滚到看见就反应；</b><br>· 认识的 300 词：<b>用自测模式过两遍</b>，看到英文能想起中文即可，<b>千万别花时间去默写它们</b>；<br>· 了解的 205 词：<b>当笑话看一遍</b>，混个眼熟——阅读里遇到不慌，猜不出也不影响做题。</div>
+      <div class="tipbox" style="background:#fff7ed;border-color:#fed7aa"><b>✍️ 写译必写（145 词）和 👂 阅读听力（155 词）差在哪？</b><br>· <b>写译必写</b>：作文和翻译里要<b>主动写出来</b>的词——过渡词（however / moreover / in addition）、观点动词（consider / demonstrate / emphasize）、高频抽象名词（development / environment / responsibility）、高频形容词（important / effective / essential）。<b>这批要练到「想到中文就能写出英文」。</b><br>· <b>阅读听力</b>：<b>认得出来就行</b>的词——比如 assume、constitute、equivalent、mutual、obviously。<b>看到听到能反应出意思即可，不用会拼写。</b></div>
     </div>
     <div class="wgroup" id="wTierNav"></div>
     <div class="wtest">
@@ -673,6 +674,7 @@ function renderLabs(){
 /* ============ 词汇页（300 核心词）============ */
 var wGroup = 0;          // 0 = 全部
 var wTier  = 0;          // 0 = 全部；1 = 必背；2 = 认识；3 = 了解
+var wSub   = '';         // 必背内部的再分类：'' = 全部；'w' = 写译必写；'r' = 阅读听力
 var wMode  = 'browse';   // browse | test
 var wQueue = [];         // 自测队列
 var wIdx   = 0;
@@ -680,16 +682,18 @@ var TIER_NAME = { 1: '⭐ 必背', 2: '🔹 认识', 3: '▪️ 了解' };
 
 function renderWords(){
   if(typeof WORDS === 'undefined') return;
-  // 分级按钮
-  var tierCount = { 1: 0, 2: 0, 3: 0 };
-  WORDS.forEach(function(x){ tierCount[x.t]++; });
+  // 分级按钮（必背内部再分「写译必写 / 阅读听力」）
+  var tierCount = { 1: 0, 2: 0, 3: 0 }, subCount = { w: 0, r: 0 };
+  WORDS.forEach(function(x){ tierCount[x.t]++; if(x.t === 1 && x.s) subCount[x.s]++; });
   var tn = '<button class="' + (wTier===0?'on':'') + '" onclick="jumpTier(0)">全部 ' + WORDS.length + '</button>';
-  [1,2,3].forEach(function(t){
-    tn += '<button class="' + (wTier===t?'on':'') + '" onclick="jumpTier(' + t + ')">' + TIER_NAME[t] + ' ' + tierCount[t] + '</button>';
-  });
+  tn += '<button class="' + (wTier===1 && !wSub?'on':'') + '" onclick="jumpTier(1)">' + TIER_NAME[1] + ' ' + tierCount[1] + '</button>';
+  tn += '<button class="' + (wSub==='w'?'on':'') + '" onclick="jumpTier(1,\'w\')">✍️ 写译必写 ' + subCount.w + '</button>';
+  tn += '<button class="' + (wSub==='r'?'on':'') + '" onclick="jumpTier(1,\'r\')">👂 阅读听力 ' + subCount.r + '</button>';
+  tn += '<button class="' + (wTier===2?'on':'') + '" onclick="jumpTier(2)">' + TIER_NAME[2] + ' ' + tierCount[2] + '</button>';
+  tn += '<button class="' + (wTier===3?'on':'') + '" onclick="jumpTier(3)">' + TIER_NAME[3] + ' ' + tierCount[3] + '</button>';
   document.getElementById('wTierNav').innerHTML = tn;
   // 分组按钮（只显示当前分级里有的组）
-  var list = WORDS.filter(function(x){ return wTier === 0 || x.t === wTier; });
+  var list = basePool();
   var groups = [];
   list.forEach(function(x){ if(groups.indexOf(x.g) < 0) groups.push(x.g); });
   groups.sort(function(a,b){ return a-b; });
@@ -701,7 +705,15 @@ function renderWords(){
   document.getElementById('wGroupNav').innerHTML = g;
   renderWordList();
 }
-function jumpTier(t){ wTier = t; wGroup = 0; wQueue = []; renderWords(); }
+function jumpTier(t, sub){ wTier = t; wSub = sub || ''; wGroup = 0; wQueue = []; renderWords(); }
+// 只按「分级 + 必背细分」筛，不含分组条件（用于渲染分组按钮）
+function basePool(){
+  return WORDS.filter(function(x){
+    if(wTier !== 0 && x.t !== wTier) return false;
+    if(wSub && x.s !== wSub) return false;
+    return true;
+  });
+}
 
 function jumpGroup(x){ wGroup = x; renderWords(); }
 function wordMode(m){
@@ -715,9 +727,7 @@ function wordMode(m){
   renderWordList();
 }
 function wPool(){
-  return WORDS.filter(function(x){
-    return (wTier === 0 || x.t === wTier) && (wGroup === 0 || x.g === wGroup);
-  });
+  return basePool().filter(function(x){ return wGroup === 0 || x.g === wGroup; });
 }
 function renderWordList(){
   var list = wPool();
@@ -726,7 +736,8 @@ function renderWordList(){
     var h = '';
     list.forEach(function(x){
       h += '<div class="wrow"><span class="w">' + x.w + '</span><span class="p">' + x.p + '</span><span class="m">' + x.m + '</span>'
-        + '<span class="p" style="margin-left:auto;white-space:nowrap">' + (TIER_NAME[x.t] || '') + '</span></div>';
+        + '<span class="p" style="margin-left:auto;white-space:nowrap">'
+        + (x.t === 1 ? (x.s === 'w' ? '✍️ 写译必写' : '👂 阅读听力') : (TIER_NAME[x.t] || '')) + '</span></div>';
     });
     box.innerHTML = h;
     document.getElementById('wTestBody').innerHTML = '<p class="small center">点下面的「🎯 自测模式」，从这 ' + list.length + ' 个词里出题。</p>';
