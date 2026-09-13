@@ -255,7 +255,18 @@ pre.code b.no{color:#fca5a5;font-weight:700}
   </section>
 
   <section id="words">
-    <h2 class="sec">📚 核心词汇（300 词）</h2>
+    <h2 class="sec">📚 核心词汇（805 词 · 分三级）</h2>
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:8px">先看清主次：哪一级要背、哪一级只要认</h3>
+      <table class="tbl">
+        <tr><th>级别</th><th>词数</th><th>要求</th><th>怎么用</th></tr>
+        <tr><td><b>⭐ 必背</b></td><td>300</td><td><b>会读、会写、会用</b></td><td>写作和翻译要能主动用出来；听力阅读必须秒反应</td></tr>
+        <tr><td><b>🔹 认识</b></td><td>300</td><td><b>看到 / 听到能反应出意思</b></td><td>阅读听力里认得即可，<b>不要求会拼写、不要求会造句</b></td></tr>
+        <tr><td><b>▪️ 了解</b></td><td>205</td><td><b>知道大概方向就行</b></td><td>低频、偏难的词。<b>不是拿来背的</b>，看到能猜出是褒是贬、是名词还是动词就够</td></tr>
+      </table>
+      <div class="tipbox"><b>为什么这样分？</b>四级要的是「有限时间内读懂听懂」，<b>不是词汇量大比拼</b>。<br>· 必背的 300 词：<b>每天滚一组，10 天一轮，反复滚到看见就反应；</b><br>· 认识的 300 词：<b>用自测模式过两遍</b>，看到英文能想起中文即可，<b>千万别花时间去默写它们</b>；<br>· 了解的 205 词：<b>当笑话看一遍</b>，混个眼熟——阅读里遇到不慌，猜不出也不影响做题。</div>
+    </div>
+    <div class="wgroup" id="wTierNav"></div>
     <div class="wtest">
       <div id="wTestBody"></div>
     </div>
@@ -268,7 +279,7 @@ pre.code b.no{color:#fca5a5;font-weight:700}
       <p class="small" id="wordTip">浏览模式：按组看单词和释义。自测模式：先看单词，想不起来再点「看释义」。</p>
       <div id="wordList"></div>
     </div>
-    <div class="tipbox"><b>怎么用这 300 词：</b>这是四级最高频的核心词，<b>不是大纲全部词汇</b>。用法是「每天滚动一组，连续 10 天滚完一轮，然后重复」。真正要过关还需要配合单词 App（百词斩 / 不背单词）每天再背 30 个大纲词。</div>
+    <div class="tipbox"><b>每天怎么用：</b>① 必背级每天滚 1 组（30 词），<b>只看英文想中文</b>，想不起来的点「看释义」，第二天再滚同一组；② 认识级用自测模式过一遍，错的词会自动回到队尾重考；③ 了解级浏览一遍就行。<b>另外还要配合单词 App（百词斩 / 不背单词）每天再背 30 个大纲词</b>——这 805 词是核心，不是大纲全部。</div>
   </section>
 
   <section id="cheatsheet">
@@ -661,24 +672,37 @@ function renderLabs(){
 }
 /* ============ 词汇页（300 核心词）============ */
 var wGroup = 0;          // 0 = 全部
+var wTier  = 0;          // 0 = 全部；1 = 必背；2 = 认识；3 = 了解
 var wMode  = 'browse';   // browse | test
 var wQueue = [];         // 自测队列
 var wIdx   = 0;
+var TIER_NAME = { 1: '⭐ 必背', 2: '🔹 认识', 3: '▪️ 了解' };
 
 function renderWords(){
   if(typeof WORDS === 'undefined') return;
-  // 分组按钮
+  // 分级按钮
+  var tierCount = { 1: 0, 2: 0, 3: 0 };
+  WORDS.forEach(function(x){ tierCount[x.t]++; });
+  var tn = '<button class="' + (wTier===0?'on':'') + '" onclick="jumpTier(0)">全部 ' + WORDS.length + '</button>';
+  [1,2,3].forEach(function(t){
+    tn += '<button class="' + (wTier===t?'on':'') + '" onclick="jumpTier(' + t + ')">' + TIER_NAME[t] + ' ' + tierCount[t] + '</button>';
+  });
+  document.getElementById('wTierNav').innerHTML = tn;
+  // 分组按钮（只显示当前分级里有的组）
+  var list = WORDS.filter(function(x){ return wTier === 0 || x.t === wTier; });
   var groups = [];
-  WORDS.forEach(function(x){ if(groups.indexOf(x.g) < 0) groups.push(x.g); });
+  list.forEach(function(x){ if(groups.indexOf(x.g) < 0) groups.push(x.g); });
   groups.sort(function(a,b){ return a-b; });
-  var g = '<button class="' + (wGroup===0?'on':'') + '" onclick="jumpGroup(0)">全部 ' + WORDS.length + '</button>';
+  var g = '<button class="' + (wGroup===0?'on':'') + '" onclick="jumpGroup(0)">本级别全部 ' + list.length + '</button>';
   groups.forEach(function(x){
-    var cnt = WORDS.filter(function(y){ return y.g===x; }).length;
+    var cnt = list.filter(function(y){ return y.g===x; }).length;
     g += '<button class="' + (wGroup===x?'on':'') + '" onclick="jumpGroup(' + x + ')">第 ' + x + ' 组 ' + cnt + '</button>';
   });
   document.getElementById('wGroupNav').innerHTML = g;
   renderWordList();
 }
+function jumpTier(t){ wTier = t; wGroup = 0; wQueue = []; renderWords(); }
+
 function jumpGroup(x){ wGroup = x; renderWords(); }
 function wordMode(m){
   wMode = m;
@@ -691,7 +715,9 @@ function wordMode(m){
   renderWordList();
 }
 function wPool(){
-  return WORDS.filter(function(x){ return wGroup === 0 || x.g === wGroup; });
+  return WORDS.filter(function(x){
+    return (wTier === 0 || x.t === wTier) && (wGroup === 0 || x.g === wGroup);
+  });
 }
 function renderWordList(){
   var list = wPool();
@@ -699,7 +725,8 @@ function renderWordList(){
   if(wMode === 'browse'){
     var h = '';
     list.forEach(function(x){
-      h += '<div class="wrow"><span class="w">' + x.w + '</span><span class="p">' + x.p + '</span><span class="m">' + x.m + '</span></div>';
+      h += '<div class="wrow"><span class="w">' + x.w + '</span><span class="p">' + x.p + '</span><span class="m">' + x.m + '</span>'
+        + '<span class="p" style="margin-left:auto;white-space:nowrap">' + (TIER_NAME[x.t] || '') + '</span></div>';
     });
     box.innerHTML = h;
     document.getElementById('wTestBody').innerHTML = '<p class="small center">点下面的「🎯 自测模式」，从这 ' + list.length + ' 个词里出题。</p>';
@@ -726,7 +753,9 @@ function renderWQuestion(){
     opts.push(pool[k].m); pool.splice(k,1);
   }
   for(var i = opts.length - 1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var t = opts[i]; opts[i] = opts[j]; opts[j] = t; }
-  var h = '<div class="small center">第 ' + (wIdx+1) + ' / ' + wQueue.length + ' 题　组别：' + (wGroup===0?'全部':'第'+wGroup+'组') + '</div>';
+  var h = '<div class="small center">第 ' + (wIdx+1) + ' / ' + wQueue.length + ' 题　'
+        + (wTier===0 ? '全部级别' : TIER_NAME[wTier]) + '　'
+        + (wGroup===0 ? '本级全部' : '第 ' + wGroup + ' 组') + '</div>';
   h += '<div class="big">' + cur.w + '　<span style="font-size:13px;color:var(--sub);font-weight:400">' + cur.p + '</span></div>';
   opts.forEach(function(o, i){
     h += '<button class="opt" style="width:100%;text-align:left;margin-bottom:6px" onclick="wAnswer(this,' + i + ',\'' + o.replace(/'/g,"\\'") + '\')">' + String.fromCharCode(65+i) + '. ' + o + '</button>';
