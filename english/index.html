@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#b45309">
+<title>英语四级 · 精通道 | CET-4 备考学习站</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--ink:#1c2430;--sub:#5f6b7a;--line:#e2e8f0;--brand:#b45309;--brand2:#92400e;--accent:#0f766e;--danger:#d9534f;--codebg:#1c1917;--codeink:#f5f5f4;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);padding-bottom:84px;line-height:1.7}
+header{background:linear-gradient(135deg,#b45309,#92400e);color:#fff;padding:18px 18px 26px;border-radius:0 0 22px 22px}
+header h1{font-size:22px;font-weight:800;letter-spacing:1px}
+header .sub{font-size:12.5px;opacity:.85;margin-top:2px}
+.prog{float:right;text-align:right;font-size:20px;font-weight:800;margin-top:-6px}
+.prog small{display:block;font-size:10px;font-weight:400;opacity:.8}
+main{max-width:720px;margin:0 auto;padding:16px 14px}
+section{display:none;animation:fade .25s}
+section.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+h2.sec{font-size:17px;font-weight:800;margin:4px 0 12px;display:flex;align-items:center;gap:8px}
+.tag{display:inline-block;font-size:10.5px;padding:2px 9px;border-radius:20px;background:#fef3c7;color:var(--brand);font-weight:700;margin-right:6px}
+.btn{display:inline-block;background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-size:15px;font-weight:700;cursor:pointer}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.warn{background:var(--accent)}
+.btn.sm{padding:7px 12px;font-size:13px;border-radius:9px}
+.bigbtn{display:block;text-align:center;width:100%}
+.road{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.road .stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+.road .stage b{font-size:13px;display:block;margin-bottom:4px}
+.road .stage span{font-size:11.5px;color:var(--sub);line-height:1.5}
+.road .danger b{color:var(--danger)}
+.chlist{display:flex;flex-direction:column;gap:8px}
+.chitem{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.chitem:active{background:#f2f7fb}
+.chitem .no{width:34px;height:34px;border-radius:10px;background:#fef3c7;color:var(--brand);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.chitem.done .no{background:var(--brand);color:#fff}
+.chitem .tt{flex:1;min-width:0}
+.chitem .tt b{font-size:14.5px}
+.chitem .tt small{display:block;font-size:11px;color:var(--sub)}
+.chitem .st{font-size:10.5px;color:var(--brand);font-weight:700;white-space:nowrap}
+.chapter{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.chapter .crumb{font-size:11px;color:var(--sub);margin-bottom:6px}
+.chapter h2{font-size:18px;margin-bottom:8px}
+.chapter .intro{background:#f0f6fb;border-left:4px solid var(--brand);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;color:#1e3a5f}
+.chapter h3{font-size:15px;margin:16px 0 8px;padding-left:10px;border-left:4px solid var(--accent);color:#7c4a03}
+.chapter p{font-size:13.5px;margin-bottom:8px}
+.chapter ul,.chapter ol{margin:6px 0 10px 22px;font-size:13.5px}
+.chapter li{margin-bottom:4px}
+pre.code{background:var(--codebg);color:var(--codeink);border-radius:10px;padding:12px;overflow-x:auto;font-family:Consolas,"Courier New",monospace;font-size:12.5px;line-height:1.6;margin:10px 0;white-space:pre-wrap;word-break:break-word}
+pre.code .kw{color:#87c9f0;font-weight:700}
+pre.code .st{color:#f9b85c}
+pre.code .cm{color:#7d8fa3;font-style:italic}
+pre.code .num{color:#7dd3fc}
+pre.code .fn{color:#87c9f0}
+pre.code .dg{color:#fca5a5;font-weight:700}
+.secview{background:#fff8e6;border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#7c4a03}
+.secview b{color:#b45309}
+.warnbox{background:#fdeaea;border-left:4px solid var(--danger);border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#7f1d1d}
+.warnbox b{color:#b91c1c}
+.tipbox{background:#eef7f0;border-left:4px solid #16a34a;border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#1e3a5f}
+.tipbox b{color:#15803d}
+.notebox{background:#eef4fb;border-left:4px solid #3b82f6;border-radius:8px;padding:10px 12px;font-size:13px;margin:10px 0;color:#1e3a8a}
+.notebox b{color:#1d4ed8}
+table.tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0}
+table.tbl th{background:#fef3c7;color:var(--brand2);padding:7px 9px;text-align:left;border:1px solid var(--line)}
+table.tbl td{padding:6px 9px;border:1px solid var(--line);vertical-align:top}
+.donebar{display:flex;gap:8px;margin-top:14px}
+.donebar .btn{flex:1}
+.qnav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.qnav span{min-width:38px;height:34px;padding:0 6px;border-radius:10px;background:#eef2f7;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;cursor:pointer;position:relative}
+.qnav span.on{background:var(--brand);color:#fff}
+.qnav span.allok{background:#dcfce7;color:#166534}
+.qnav span.hasbad{background:#fee2e2;color:#991b1b}
+.qnav span.on.allok,.qnav span.on.hasbad{outline:2px solid var(--brand);outline-offset:1px}
+.qhead{font-size:13px;color:var(--sub);margin-bottom:8px}
+.qitem{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.qitem .q{font-size:14.5px;font-weight:700;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;background:#f7fafc;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;margin-bottom:7px;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.opt:active{background:#f1f6fa}
+.opt.right{background:#e6f7ec;border-color:#22c55e;color:#166534;font-weight:700}
+.opt.wrong{background:#fdeaea;border-color:#ef4444;color:#991b1b}
+.explain{display:none;background:#f0f6fb;border-radius:9px;padding:10px 12px;font-size:13px;margin-top:8px;color:#1e3a5f}
+.explain.show{display:block}
+.explain b{color:var(--brand)}
+.cs-cat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.cs-cat h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cs-item{padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.cs-item:last-child{border-bottom:none}
+.cs-item b{color:var(--brand2)}
+.cs-item .ex{display:block;color:var(--sub);font-size:12px;margin-top:2px;word-break:break-all}
+.envstep{display:flex;gap:12px;margin-bottom:12px}
+.envstep .n{width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.envstep .t{flex:1;font-size:13.5px}
+.envstep .t b{font-size:14px}
+#bottomNav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;padding:6px 0 calc(8px + env(safe-area-inset-bottom));z-index:50}
+#bottomNav div{flex:1;text-align:center;font-size:10.5px;color:var(--sub);padding:6px 0;cursor:pointer;border-radius:10px;margin:0 2px}
+#bottomNav div b{display:block;font-size:18px;margin-bottom:1px;font-weight:400}
+#bottomNav div.on{color:var(--brand);background:#fef3c7;font-weight:700}
+.small{font-size:12px;color:var(--sub)}
+.center{text-align:center}
+.search{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;font-size:14px;margin-bottom:12px;background:#fff;color:var(--ink)}
+.search:focus{outline:none;border-color:var(--brand)}
+.snippet{font-size:12px;color:var(--sub);margin-top:4px;line-height:1.5}
+.snippet em{background:#fff3bf;font-style:normal;color:#7c4a03;font-weight:700}
+.statline{display:flex;gap:10px;text-align:center;margin-bottom:12px}
+.statline div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 6px}
+.statline b{display:block;font-size:19px;color:var(--brand)}
+.statline small{font-size:11px;color:var(--sub)}
+.lab{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.lab h4{font-size:15px;margin-bottom:6px}
+.lab .meta{font-size:11.5px;color:var(--sub);margin-bottom:8px}
+.lab .goal{font-size:13px;background:#f0f6fb;border-radius:8px;padding:8px 10px;margin-bottom:10px;color:#1e3a5f}
+.lab .step{display:flex;gap:9px;font-size:13px;margin-bottom:6px}
+.lab .step .n{width:22px;height:22px;border-radius:50%;background:#fef3c7;color:var(--brand);font-weight:800;font-size:11.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
+details{margin-top:8px;font-size:13px}
+summary{cursor:pointer;font-weight:700;color:var(--brand);font-size:13px;padding:4px 0}
+.checkrow{display:flex;gap:10px;align-items:flex-start;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line);cursor:pointer}
+.checkrow:last-child{border-bottom:none}
+.checkrow .box{width:20px;height:20px;border:1.5px solid var(--line);border-radius:6px;flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent}
+.checkrow.on .box{background:#16a34a;border-color:#16a34a;color:#fff}
+.checkrow.on{color:var(--sub)}
+.gloss{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.gloss h4{font-size:14.5px;color:var(--brand2);margin-bottom:4px}
+.gloss .en{font-size:11.5px;color:var(--sub);font-weight:400}
+.gloss p{font-size:13px}
+.gloss .rel{font-size:11.5px;color:var(--sub);margin-top:5px}
+.pill{display:inline-block;font-size:10.5px;padding:1px 8px;border-radius:20px;background:#f2ece9;color:var(--sub);margin-right:5px}
+/* 英语内容专用标注（配合 hlText） */
+pre.code b.blank{color:#fca5a5;text-decoration:underline;font-weight:700}
+pre.code b.hint{color:#fcd34d;font-weight:700}
+pre.code b.ok{color:#86efac;font-weight:700}
+pre.code b.no{color:#fca5a5;font-weight:700}
+/* 词汇页 */
+.wgroup{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.wgroup button{flex:0 0 auto;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:#fff;color:var(--sub);cursor:pointer}
+.wgroup button.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+.wrow{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.wrow .w{font-weight:700;color:var(--brand2);min-width:120px}
+.wrow .p{font-size:11.5px;color:var(--sub);min-width:44px}
+.wrow .m{color:var(--ink)}
+.wtest{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px;margin-bottom:12px}
+.wtest .big{font-size:22px;font-weight:800;color:var(--brand2);text-align:center;margin:6px 0 10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="prog"><span id="progNum">0/20</span><small>章已学</small></div>
+  <h1>🎓 英语四级 · 精通道</h1>
+  <div class="sub">CET-4 精通道 · 词汇 → 语法 → 四大题型 → 应试实战</div>
+</header>
+
+<main>
+  <section id="home" class="on">
+    <div class="card">
+      <h2 class="sec">📌 今天学什么</h2>
+      <p id="todayTip" class="small">加载中…</p>
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button class="btn bigbtn" onclick="gotoStudy()">📖 继续学习</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <button class="btn ghost bigbtn" onclick="checkin()">✅ 今日打卡</button>
+      </div>
+      <p class="small center" style="margin-top:8px">累计打卡 <b id="chkNum">0</b> 天 · 练习正确率 <b id="accNum">—</b></p>
+    </div>
+    <div class="card">
+      <h2 class="sec">🎯 从入门到精通：怎么用这个站</h2>
+      <div class="envstep"><div class="n">1</div><div class="t"><b>读一章（25 分钟）</b><br>每章都对着四级真题讲——<b>不是背语法术语，是学会「这道题为什么选它」</b>。读完能说出「考的是哪个点、干扰项怎么设的」，才算真懂。</div></div>
+      <div class="envstep"><div class="n">2</div><div class="t"><b>做题（15 分钟）</b><br>每章 4 道题，选完立刻出解析。错题自动进错题本。<b>错在哪，就说明哪个语法点你只是"看着懂"。</b></div></div>
+      <div class="envstep"><div class="n">3</div><div class="t"><b>开口 + 动笔（30 分钟）</b><br>去「训练」页做当阶段的专项训练：跟读、精听、长难句切分、翻译回译。<b>英语是技能不是知识，只看不练永远停在 398 分。</b></div></div>
+      <div class="envstep"><div class="n">4</div><div class="t"><b>查手册（随时）</b><br>语法忘了查「速查」；术语忘了查「术语」；单词记不住去「词汇」页滚动自测。</div></div>
+      <div class="tipbox"><b>精通判据：</b>不是「背下多少单词」，而是<b>给你一篇没见过真题文章，你能在 8 分钟内做完 5 道题、并说清每道题在原文哪一句、干扰项错在哪</b>；给你一句中文，你能写出没有语法错误的英文。首页底部的自测清单就是这张判据表。</div>
+    </div>
+    <div class="card">
+      <h2 class="sec">🏆 精通自测清单</h2>
+      <p class="small" style="margin-bottom:8px">能全部打勾，说明你已经到实战可用水平（点一下就能勾选）。</p>
+      <div id="mastery"></div>
+      <p class="small center" style="margin-top:10px">已完成 <b id="masteryNum">0/12</b></p>
+    </div>
+    <div class="card">
+      <h2 class="sec">🗺 学习路线图</h2>
+      <div class="road">
+        <div class="stage"><b>1-5 章 · 语音与词汇</b><span>考试全景与提分地图、音标连读弱读（听力地基）、构词法、高频词汇体系、选词填空词性判断</span></div>
+        <div class="stage"><b>6-11 章 · 语法体系</b><span>五种基本句型、时态体系、语态与情态动词、非谓语动词、定语与状语从句、名词性从句与强调倒装</span></div>
+        <div class="stage"><b>12-17 章 · 四大题型</b><span>听力（新闻 / 长对话 / 篇章）、阅读（选词 / 匹配 / 仔细阅读）、写作（议论文 / 应用文）</span></div>
+        <div class="stage danger"><b>18-20 章 · 翻译与实战</b><span>汉译英核心技巧、真题时间分配与答题顺序、考前 30 天冲刺与错题复盘体系</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2 class="sec">📅 考试信息与分值地图</h2>
+      <p class="small" style="margin-bottom:10px">距 <b id="examDateText">12 月四级考试</b> 还有 <b id="cdNum" style="color:#b45309;font-size:19px">—</b> 天</p>
+      <table class="tbl">
+        <tr><th>板块</th><th>分值</th><th>占比</th><th>说明</th></tr>
+        <tr><td>写作</td><td>106.5</td><td>15%</td><td>120-180 词，30 分钟</td></tr>
+        <tr><td>听力</td><td>248.5</td><td>35%</td><td>短篇新闻 7% + 长对话 8% + 听力篇章 20%</td></tr>
+        <tr><td>阅读</td><td>248.5</td><td>35%</td><td>选词填空 5% + 长篇阅读 10% + 仔细阅读 20%</td></tr>
+        <tr><td>翻译</td><td>106.5</td><td>15%</td><td>汉译英，140-160 字，30 分钟</td></tr>
+        <tr><td><b>合计</b></td><td><b>710</b></td><td>100%</td><td><b>425 分及格</b>（约 60%）</td></tr>
+      </table>
+      <div class="tipbox"><b>提分优先级（按性价比排序）：</b><br>
+      ① <b>仔细阅读</b>（142 分，每题 14.2 分）——多对 5 题 = +71 分，涨分最快；<br>
+      ② <b>听力篇章 + 长对话</b>（约 199 分）——靠「预读选项 + 视听一致」能稳拿一大半；<br>
+      ③ <b>写作翻译</b>（213 分）——背模板 + 保底句型，两周就能从 60 分提到 120 分；<br>
+      ④ <b>选词填空</b>（35.5 分）——性价比最低，<b>放在最后做，别死磕</b>。</div>
+    </div>
+  </section>
+
+  <section id="course">
+    <h2 class="sec">📚 课程（20 章）</h2>
+    <input class="search" id="searchBox" placeholder="🔍 搜索知识点，如 定语从句、虚拟语气、连读、选词填空…" oninput="doSearch()">
+    <div id="searchResult"></div>
+    <div id="chDetail"></div>
+    <div class="chlist" id="chList"></div>
+  </section>
+
+  <section id="quiz">
+    <h2 class="sec">✍️ 章节练习</h2>
+    <div class="statline">
+      <div><b id="qDone">0</b><small>已答题目</small></div>
+      <div><b id="qAcc">—</b><small>正确率</small></div>
+      <div><b id="qBad">0</b><small>错题待复习</small></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn ghost sm" style="flex:1" onclick="showWrong()">❌ 只看错题</button>
+      <button class="btn ghost sm" style="flex:1" onclick="resetQuiz()">↺ 重置练习</button>
+    </div>
+    <div class="qnav" id="qnav"></div>
+    <div id="quizBody"></div>
+  </section>
+
+  <section id="lab">
+    <h2 class="sec">🏋️ 训练与实战</h2>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn sm" id="tabLabs" style="flex:1" onclick="showLabTab('labs')">🏋️ 专项训练</button>
+      <button class="btn ghost sm" id="tabDvwa" style="flex:1" onclick="showLabTab('dvwa')">🎯 实战演练</button>
+    </div>
+    <div id="paneLabs">
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:10px">开始训练前：你需要准备什么</h3>
+      <div class="envstep"><div class="n">1</div><div class="t"><b>一套真题（最重要）</b><br>推荐用「懒笔记四级真题全集」<code>english-exam.lazynote.cn/cet4/</code>（2015-2026 共 76 套，含听力原声）。<b>没有真题，这门课只能学一半。</b>至少要准备 10 套。</div></div>
+      <div class="envstep"><div class="n">2</div><div class="t"><b>能出声的设备</b><br>听力必须外放或戴耳机。<b>不要用手机喇叭凑合</b>——四级听力是考场广播音质，平时就要适应「听不太清」的感觉。</div></div>
+      <div class="envstep"><div class="n">3</div><div class="t"><b>一个计时器</b><br>考试是限时的：写作 30 分钟、听力 25 分钟（自动播放）、阅读 40 分钟。<b>平时不限时，考场上一定做不完。</b></div></div>
+      <div class="envstep"><div class="n">4</div><div class="t"><b>一个错题本</b><br>本站的错题本自动记录选择题；<b>但写作和翻译的错要你自己抄</b>——抄错句比抄单词有用十倍。</div></div>
+      <div class="envstep"><div class="n">5</div><div class="t"><b>一条底线</b><br>每次做完题必须复盘：<b>这道题在原文哪一句？我为什么选错？干扰项是怎么设的？</b> 不复盘的练习等于白做。</div></div>
+      <div class="warnbox"><b>提醒：</b>英语是技能，不是知识。<b>看课只能让你「知道」，做题才能让你「会」。</b>本站每一章都配了训练，跳过训练直接往下看，最后分数不会有变化。</div>
+    </div>
+      <div id="labList"></div>
+    </div>
+    <div id="paneDvwa" style="display:none">
+      <div class="tipbox"><b>这一页是「实战演练」：</b>里面是 10 组<b>迷你真题</b>（阅读段落 + 题目 + 逐题解析、翻译句子 + 参考译文、写作题目 + 评分要点）。<b>用法：先限时自己做，写完再看答案。</b><br><br>为什么这么设计——四级考的不是「你懂不懂语法」，而是<b>你在时间压力下能不能选对</b>。这 10 组题专门训练「定位 + 排除 + 保底」这套考场动作。<b>建议从第 12 章之后开始，每学完一个题型就来做对应那几组。</b></div>
+      <div id="dvwaList"></div>
+    </div>
+  </section>
+
+  <section id="words">
+    <h2 class="sec">📚 核心词汇（300 词）</h2>
+    <div class="wtest">
+      <div id="wTestBody"></div>
+    </div>
+    <div class="wgroup" id="wGroupNav"></div>
+    <div class="card">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button class="btn ghost sm" style="flex:1" onclick="wordMode('browse')">📖 浏览模式</button>
+        <button class="btn sm" style="flex:1" onclick="wordMode('test')">🎯 自测模式</button>
+      </div>
+      <p class="small" id="wordTip">浏览模式：按组看单词和释义。自测模式：先看单词，想不起来再点「看释义」。</p>
+      <div id="wordList"></div>
+    </div>
+    <div class="tipbox"><b>怎么用这 300 词：</b>这是四级最高频的核心词，<b>不是大纲全部词汇</b>。用法是「每天滚动一组，连续 10 天滚完一轮，然后重复」。真正要过关还需要配合单词 App（百词斩 / 不背单词）每天再背 30 个大纲词。</div>
+  </section>
+
+  <section id="cheatsheet">
+    <h2 class="sec">⚡ 速查表</h2>
+    <input class="search" id="csSearch" placeholder="🔍 查语法点或模板，如 定语从句、虚拟语气、作文模板、翻译技巧…" oninput="filterCS()">
+    <div id="csBody"></div>
+  </section>
+
+  <section id="gloss">
+    <h2 class="sec">📖 术语表</h2>
+    <input class="search" id="glSearch" placeholder="🔍 查术语，如 非谓语动词、主谓一致、同义替换、视听一致…" oninput="filterGloss()">
+    <div id="glBody"></div>
+  </section>
+</main>
+
+<nav id="bottomNav">
+  <div class="on" data-sec="home"><b>🏠</b>首页</div>
+  <div data-sec="course"><b>📚</b>课程</div>
+  <div data-sec="quiz"><b>✍️</b>练习</div>
+  <div data-sec="lab"><b>🏋️</b>训练</div>
+  <div data-sec="words"><b>📚</b>词汇</div>
+  <div data-sec="cheatsheet"><b>⚡</b>速查</div>
+  <div data-sec="gloss"><b>📖</b>术语</div>
+</nav>
+
+<script src="data/chapters-a.js"></script>
+<script src="data/chapters-b.js"></script>
+<script src="data/chapters-c.js"></script>
+<script src="data/chapters-d.js"></script>
+<script src="data/exercises.js"></script>
+<script src="data/labs.js"></script>
+<script src="data/dvwa.js"></script>
+<script src="data/words.js"></script>
+<script src="data/cheatsheet.js"></script>
+<script src="data/glossary.js"></script>
+<script>
+/* ============ 基础工具 ============ */
+var LS = (function(){
+  var mem = {};
+  function get(k){ try{ var v = localStorage.getItem(k); return (v===null? (mem[k]===undefined?null:mem[k]) : v); }catch(e){ return mem[k]===undefined?null:mem[k]; } }
+  function set(k,v){ try{ localStorage.setItem(k,v); }catch(e){ mem[k]=v; } }
+  return { get:get, set:set };
+})();
+function readJSON(key, def){
+  try{ var v = LS.get(key); if(!v) return def; var o = JSON.parse(v); return (o===null||o===undefined)?def:o; }
+  catch(e){ return def; }
+}
+function writeJSON(key, obj){ try{ LS.set(key, JSON.stringify(obj)); }catch(e){} }
+
+var ALL = [];
+// ⚠️ 考试日期：改这一行即可（格式 年-月-日）
+var EXAM_DATE = '2026-12-12';
+[typeof CHAPTERS_A!=="undefined"?CHAPTERS_A:[],
+ typeof CHAPTERS_B!=="undefined"?CHAPTERS_B:[],
+ typeof CHAPTERS_C!=="undefined"?CHAPTERS_C:[],
+ typeof CHAPTERS_D!=="undefined"?CHAPTERS_D:[]].forEach(function(m){ ALL = ALL.concat(m); });
+ALL.sort(function(a,b){ return a.id-b.id; });
+
+var readArr  = readJSON('en_read',  []);
+var chkArr   = readJSON('en_checkin', []);
+var quizRec  = readJSON('en_quiz', {});     // "章号_题号" -> 1 对 / 0 错
+var mastery  = readJSON('en_mastery', {});
+
+/* ============ 代码高亮 ============
+   英语内容不需要「语法高亮」（英语里 in / for / and / not 到处都是，
+   按编程关键字着色只会变成一片花）。所以这里只做两件事：
+     ① HTML 转义（保证 < > & 不会破坏页面）
+     ② 轻量标注：填空线 ______ 加下划线、【】里的答题提示加粗、行首的 ✗/✓ 标红标绿
+   这样例句、模板、解析读起来比彩色关键字清楚得多。
+=================================== */
+function escHtml(x){ return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hlText(s){
+  if(!s) return '';
+  var t = escHtml(String(s));
+  // 填空线：连续 3 个以上下划线 → 加粗下划线，方便一眼看到空在哪
+  t = t.replace(/_{3,}/g, function(m){ return '<b class="blank">' + m + '</b>'; });
+  // 【…】提示（【答案】【解析】【注意】这类）
+  t = t.replace(/【([^】]{1,12})】/g, '<b class="hint">【$1】</b>');
+  // ✓ / ✗ 标记
+  t = t.replace(/✓/g, '<b class="ok">✓</b>').replace(/✗/g, '<b class="no">✗</b>');
+  return t;
+}
+
+/* ============ 渲染 ============ */
+function setSec(name){
+  document.querySelectorAll('main section').forEach(function(s){ s.classList.remove('on'); });
+  var el = document.getElementById(name); if(el) el.classList.add('on');
+  document.querySelectorAll('#bottomNav div').forEach(function(d){ d.classList.toggle('on', d.dataset.sec===name); });
+  window.scrollTo(0,0);
+}
+
+function renderHome(){
+  document.getElementById('progNum').textContent = readArr.length + '/' + ALL.length;
+  document.getElementById('chkNum').textContent = chkArr.length;
+  document.getElementById('accNum').textContent = accText();
+  var next = firstUndone();
+  document.getElementById('todayTip').textContent = next
+    ? '下一站：第 ' + next.id + ' 章「' + next.title + '」（' + next.stage + '）。读完做 4 道题，再去「训练」页做同阶段专项训练。'
+    : '🎉 20 章全部学完！现在去「实战演练」限时做完 10 组迷你真题，再按第 19 章的节奏每 3 天一套完整真题，用首页自测清单验收自己。';
+  // 考试倒计时（日期按你报名的那一场改这一个地方就行）
+  var el = document.getElementById('cdNum');
+  if(el){
+    var exam = new Date(EXAM_DATE + 'T09:00:00');
+    var days = Math.ceil((exam - new Date()) / 86400000);
+    if(days > 0){ el.textContent = days; }
+    else if(days === 0){ el.textContent = '今天考试，加油！'; }
+    else { el.textContent = '已考完'; }
+  }
+  renderMastery();
+}
+function firstUndone(){
+  for(var i=0;i<ALL.length;i++){ if(readArr.indexOf(ALL[i].id)<0) return ALL[i]; }
+  return null;
+}
+function accText(){
+  var keys = Object.keys(quizRec);
+  if(!keys.length) return '—';
+  var ok = 0; keys.forEach(function(k){ if(quizRec[k]===1) ok++; });
+  return Math.round(ok/keys.length*100) + '%';
+}
+function checkin(){
+  var t = new Date();
+  var today = t.getFullYear() + '-' + (t.getMonth()+1) + '-' + t.getDate();
+  if(chkArr.indexOf(today) < 0){ chkArr.push(today); writeJSON('en_checkin', chkArr); }
+  document.getElementById('chkNum').textContent = chkArr.length;
+  alert('✅ 打卡成功！累计 ' + chkArr.length + ' 天');
+}
+
+var MASTERY = [
+'能说清四级四大部分的题型、分值和时间分配，并知道提分优先级（仔细阅读 &gt; 听力 &gt; 写作翻译 &gt; 选词填空）',
+'能正确读出 48 个音标，听得懂连读、弱读、失去爆破，能解释「为什么这个词我没听出来」',
+'能用词根词缀拆解生词，看到 -spect-、-port-、-duc- 这类词根能猜出大致意思',
+'掌握 300 个四级核心高频词，能辨析 affect/effect、adapt/adopt 这类易混词',
+'能对任何句子快速判断主干（主谓宾），不被长长的定语和插入语绕晕',
+'能准确使用 8 大时态（尤其现在完成时、过去完成时、将来完成时）并说出使用场景',
+'能判断非谓语动词用 to do / doing / done，并解释为什么（主动被动、先发生后发生）',
+'能分析定语从句、状语从句、名词性从句，知道 which 和 that、that 和 what 怎么选',
+'听力：能靠预读选项 + 视听一致 + 同义替换，在新闻 / 长对话 / 篇章里稳定拿分',
+'阅读：能在 8 分钟内完成一篇仔细阅读，说出每题定位在原文哪一句、干扰项错在哪',
+'写作：能在 30 分钟内写出 120-180 词的结构完整、无明显语法错误的作文',
+'翻译：能把无主句、流水句、文化词处理成通顺英文，不出现中式英语'
+];
+function renderMastery(){
+  var box = document.getElementById('mastery');
+  if(!box || box.dataset.ready) { 
+    var n = 0; MASTERY.forEach(function(_,i){ if(mastery[i]) n++; });
+    if(box) document.getElementById('masteryNum').textContent = n + '/' + MASTERY.length;
+    return;
+  }
+  var h = '';
+  MASTERY.forEach(function(_,i){
+    h += '<div class="checkrow ' + (mastery[i]?'on':'') + '" onclick="toggleMastery(' + i + ')"><div class="box">✓</div><div>' + MASTERY[i] + '</div></div>';
+  });
+  box.innerHTML = h; box.dataset.ready = '1';
+  var n = 0; MASTERY.forEach(function(_,i){ if(mastery[i]) n++; });
+  document.getElementById('masteryNum').textContent = n + '/' + MASTERY.length;
+}
+function toggleMastery(i){
+  mastery[i] = mastery[i] ? 0 : 1;
+  writeJSON('en_mastery', mastery);
+  var rows = document.querySelectorAll('#mastery .checkrow');
+  if(rows[i]) rows[i].classList.toggle('on', !!mastery[i]);
+  var n = 0; MASTERY.forEach(function(_,k){ if(mastery[k]) n++; });
+  document.getElementById('masteryNum').textContent = n + '/' + MASTERY.length;
+}
+
+function renderCourse(){
+  var box = document.getElementById('chList'); var h = '';
+  ALL.forEach(function(c){
+    var done = readArr.indexOf(c.id) >= 0;
+    var qn = (typeof EXERCISES!=="undefined" && EXERCISES[c.id]) ? EXERCISES[c.id].length : 0;
+    h += '<div class="chitem ' + (done?'done':'') + '" onclick="renderChapter(' + c.id + ')">'
+      + '<div class="no">' + (done?'✓':c.id) + '</div>'
+      + '<div class="tt"><b>' + c.id + '. ' + c.title + '</b><small>' + c.stage + ' · ' + c.sections.length + ' 节 · ' + qn + ' 题</small></div>'
+      + '<div class="st">' + (done?'已学':'开始 →') + '</div></div>';
+  });
+  box.innerHTML = h;
+}
+function renderChapter(id){
+  var c = null;
+  ALL.forEach(function(x){ if(x.id===id) c = x; });
+  if(!c) return;
+  var h = '<div class="chapter"><div class="crumb"><a href="javascript:void(0)" onclick="backToList()">← 课程列表</a> · 第 ' + c.id + ' 章</div>'
+    + '<h2>' + c.id + '. ' + c.title + '</h2>'
+    + '<div class="intro">' + c.intro + '</div>';
+  c.sections.forEach(function(s){
+    if(s.h) h += '<h3>' + s.h + '</h3>';
+    (s.p||[]).forEach(function(p){ h += '<p>' + p + '</p>'; });
+    (s.code||[]).forEach(function(cd){ h += '<pre class="code">' + hlText(cd) + '</pre>'; });
+    if(s.ul){ h += '<ul>' + s.ul.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul>'; }
+    if(s.ol){ h += '<ol>' + s.ol.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ol>'; }
+    if(s.tbl){
+      h += '<table class="tbl"><tr>' + s.tbl[0].map(function(x){ return '<th>' + x + '</th>'; }).join('') + '</tr>'
+        + s.tbl.slice(1).map(function(r){ return '<tr>' + r.map(function(x){ return '<td>' + x + '</td>'; }).join('') + '</tr>'; }).join('') + '</table>';
+    }
+    if(s.note) h += '<div class="notebox"><b>📎 补充：</b>' + s.note + '</div>';
+    if(s.warn) h += '<div class="warnbox"><b>⚠️ 注意：</b>' + s.warn + '</div>';
+    if(s.tip)  h += '<div class="tipbox"><b>💡 提示：</b>' + s.tip + '</div>';
+  });
+  if(c.secview) h += '<div class="secview"><b>🛡 安全视角：</b>' + c.secview + '</div>';
+  h += '<div class="donebar"><button class="btn" onclick="markDone(' + c.id + ')">✅ 学完了</button>'
+    + '<button class="btn ghost" onclick="doQuiz(' + c.id + ')">✍️ 做本章练习</button></div></div>';
+  document.getElementById('chDetail').innerHTML = h;
+  document.getElementById('chList').style.display = 'none';
+  document.getElementById('searchResult').innerHTML = '';
+  window.scrollTo(0,0);
+}
+function backToList(){
+  document.getElementById('chDetail').innerHTML = '';
+  document.getElementById('chList').style.display = '';
+  window.scrollTo(0,0);
+}
+function markDone(id){
+  if(readArr.indexOf(id) < 0){ readArr.push(id); writeJSON('en_read', readArr); }
+  renderHome(); renderCourse(); renderChapter(id);
+}
+function gotoStudy(){
+  var c = firstUndone();
+  if(!c){ setSec('course'); return; }
+  renderChapter(c.id); setSec('course');
+}
+
+/* ============ 搜索 ============ */
+function plain(t){
+  return String(t||'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+}
+function chapText(c){
+  var parts = [c.title, plain(c.intro), plain(c.secview)];
+  c.sections.forEach(function(s){
+    if(s.h) parts.push(plain(s.h));
+    (s.p||[]).forEach(function(x){ parts.push(plain(x)); });
+    if(s.ul) s.ul.forEach(function(x){ parts.push(plain(x)); });
+    if(s.ol) s.ol.forEach(function(x){ parts.push(plain(x)); });
+    if(s.tbl) s.tbl.forEach(function(r){ r.forEach(function(x){ parts.push(plain(x)); }); });
+    (s.code||[]).forEach(function(x){ parts.push(plain(x)); });
+    ['note','warn','tip'].forEach(function(k){ if(s[k]) parts.push(plain(s[k])); });
+  });
+  return parts.join(' \n ');
+}
+var IDX = null;
+function buildIndex(){
+  if(IDX) return IDX;
+  IDX = ALL.map(function(c){ return { c:c, t:chapText(c) }; });
+  return IDX;
+}
+function doSearch(){
+  var q = document.getElementById('searchBox').value.trim();
+  var box = document.getElementById('searchResult');
+  if(!q){ box.innerHTML = ''; document.getElementById('chList').style.display=''; document.getElementById('chDetail').innerHTML=''; return; }
+  if(document.getElementById('chDetail').innerHTML){ document.getElementById('chDetail').innerHTML=''; document.getElementById('chList').style.display='none'; }
+  var idx = buildIndex();
+  var ql = q.toLowerCase();
+  var hits = [];
+  idx.forEach(function(row){
+    var pos = row.t.toLowerCase().indexOf(ql);
+    if(pos >= 0){
+      var start = Math.max(0, pos-28);
+      var seg = row.t.substr(start, 110).replace(/\n/g,' ');
+      seg = seg.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]; });
+      var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','ig');
+      hits.push({ c:row.c, snip:seg.replace(re,'<em>$1</em>') });
+    }
+  });
+  if(!hits.length){ box.innerHTML = '<div class="card"><p class="small">没有匹配「' + q.replace(/[<>]/g,'') + '」的内容，换个关键词试试（例如 unserialize / extract / htmlspecialchars / phar / 魔术方法）。</p></div>'; return; }
+  var h = '<p class="small" style="margin-bottom:8px">命中 ' + hits.length + ' 章：</p>';
+  hits.forEach(function(x){
+    h += '<div class="chitem" onclick="document.getElementById(\'searchBox\').value=\'\';renderChapter(' + x.c.id + ')">'
+      + '<div class="no">' + x.c.id + '</div><div class="tt"><b>' + x.c.title + '</b>'
+      + '<div class="snippet">…' + x.snip + '…</div></div><div class="st">打开 →</div></div>';
+  });
+  box.innerHTML = h;
+}
+
+/* ============ 练习 ============ */
+function renderQuizNav(){
+  var h = '';
+  ALL.forEach(function(c){
+    var list = (typeof EXERCISES!=="undefined" && EXERCISES[c.id]) ? EXERCISES[c.id] : [];
+    var ok = 0, bad = 0;
+    list.forEach(function(_,i){ var v = quizRec[c.id + '_' + i]; if(v===1) ok++; else if(v===0) bad++; });
+    var cls = '';
+    if(list.length && ok + bad === list.length && bad === 0) cls = 'allok';
+    else if(bad > 0) cls = 'hasbad';
+    h += '<span class="' + cls + '" data-ch="' + c.id + '" onclick="doQuiz(' + c.id + ')">' + c.id + '</span>';
+  });
+  document.getElementById('qnav').innerHTML = h;
+  updateQuizStats();
+}
+function updateQuizStats(){
+  var keys = Object.keys(quizRec), ok = 0, bad = 0;
+  keys.forEach(function(k){ if(quizRec[k]===1) ok++; else bad++; });
+  document.getElementById('qDone').textContent = keys.length;
+  document.getElementById('qAcc').textContent = keys.length ? Math.round(ok/keys.length*100) + '%' : '—';
+  document.getElementById('qBad').textContent = bad;
+  var el = document.getElementById('accNum'); if(el) el.textContent = accText();
+}
+function doQuiz(id){
+  if(!document.getElementById('qnav').innerHTML) renderQuizNav();
+  document.querySelectorAll('#qnav span').forEach(function(s){ s.classList.toggle('on', parseInt(s.dataset.ch) === id); });
+  var list = (typeof EXERCISES!=="undefined" && EXERCISES[id]) ? EXERCISES[id] : [];
+  var h = '<div class="qhead">第 ' + id + ' 章练习 · 共 ' + list.length + ' 题（选完立即出解析；答案会记录，可随时看错题）</div>';
+  list.forEach(function(q,i){
+    var rec = quizRec[id + '_' + i];
+    h += '<div class="qitem" data-ch="' + id + '" data-i="' + i + '"><div class="q">' + (i+1) + '. ' + q.q + '</div>';
+    q.options.forEach(function(o,j){
+      h += '<button class="opt" data-j="' + j + '" onclick="pickOpt(this,' + id + ',' + i + ',' + j + ')">' + String.fromCharCode(65+j) + '. ' + o + '</button>';
+    });
+    h += '<div class="explain"' + (rec!==undefined?' style="display:block"':'') + '><b>解析：</b>' + q.explain + '</div></div>';
+  });
+  document.getElementById('quizBody').innerHTML = h;
+  list.forEach(function(q,i){
+    var rec = quizRec[id + '_' + i];
+    if(rec !== undefined) paintItem(id, i, rec===1 ? q.answer : -1, q.answer, true);
+  });
+  setSec('quiz');
+}
+function paintItem(id, i, clicked, answer, silent){
+  var item = document.querySelector('.qitem[data-ch="' + id + '"][data-i="' + i + '"]');
+  if(!item) return;
+  item.querySelectorAll('.opt').forEach(function(o,idx){
+    o.disabled = true;
+    if(idx === answer) o.classList.add('right');
+    else if(idx === clicked) o.classList.add('wrong');
+  });
+  item.querySelector('.explain').classList.add('show');
+}
+function pickOpt(btn, ch, i, j){
+  var q = EXERCISES[ch][i];
+  var key = ch + '_' + i;
+  if(quizRec[key] !== undefined) return;
+  quizRec[key] = (j === q.answer) ? 1 : 0;
+  writeJSON('en_quiz', quizRec);
+  paintItem(ch, i, j, q.answer);
+  renderQuizNav();
+}
+function showWrong(){
+  var h = '<div class="qhead">错题本 · 按章节列出你答错过的题</div>';
+  var found = 0;
+  ALL.forEach(function(c){
+    var list = (typeof EXERCISES!=="undefined" && EXERCISES[c.id]) ? EXERCISES[c.id] : [];
+    var rows = '';
+    list.forEach(function(q,i){
+      if(quizRec[c.id + '_' + i] === 0){
+        found++;
+        rows += '<div class="qitem"><div class="q">' + q.q + '</div>'
+          + '<div style="font-size:13px;color:#166534;margin-bottom:4px">✅ 正确答案：' + String.fromCharCode(65+q.answer) + '. ' + q.options[q.answer] + '</div>'
+          + '<div class="explain show"><b>解析：</b>' + q.explain + '</div></div>';
+      }
+    });
+    if(rows) h += '<div class="card"><h2 class="sec">第 ' + c.id + ' 章 · ' + c.title + '</h2>' + rows
+      + '<button class="btn ghost sm" onclick="doQuiz(' + c.id + ')">重做本章 →</button></div>';
+  });
+  if(!found) h += '<div class="card"><p class="small">还没有错题。先去「练习」做几章，答错的题会自动收到这里。</p></div>';
+  document.getElementById('quizBody').innerHTML = h;
+  document.querySelectorAll('#qnav span').forEach(function(s){ s.classList.remove('on'); });
+  setSec('quiz');
+}
+function resetQuiz(){
+  if(!confirm('确定清空所有作答记录和错题吗？')) return;
+  quizRec = {}; writeJSON('en_quiz', quizRec);
+  renderQuizNav(); document.getElementById('quizBody').innerHTML = '';
+  updateQuizStats();
+}
+
+/* ============ 实验 ============ */
+function renderLabs(){
+  var box = document.getElementById('labList');
+  if(typeof LABS === 'undefined') return;
+  var h = '';
+  LABS.forEach(function(l){
+    h += '<div class="lab"><h4>' + l.title + '</h4><div class="meta">' + l.meta + '</div>'
+      + '<div class="goal"><b>目标：</b>' + l.goal + '</div>';
+    if(l.env) h += '<p class="small" style="margin-bottom:8px"><b>环境：</b>' + l.env + '</p>';
+    if(l.steps){
+      h += '<div style="margin-top:6px">';
+      l.steps.forEach(function(s,i){ h += '<div class="step"><div class="n">' + (i+1) + '</div><div>' + s + '</div></div>'; });
+      h += '</div>';
+    }
+    if(l.code) h += '<pre class="code">' + hlText(l.code) + '</pre>';
+    if(l.verify) h += '<details><summary>✅ 怎么算成功（验证方法）</summary><ul style="margin:6px 0 0 20px">'
+      + l.verify.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(l.undo) h += '<details><summary>↩ 怎么恢复（回滚）</summary><ul style="margin:6px 0 0 20px">'
+      + l.undo.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(l.why) h += '<details><summary>🎓 这个实验在教你什么</summary><p style="margin-top:6px">' + l.why + '</p></details>';
+    if(l.warn) h += '<div class="warnbox"><b>⚠️ 注意：</b>' + l.warn + '</div>';
+    if(l.tip) h += '<div class="tipbox"><b>💡 提示：</b>' + l.tip + '</div>';
+    h += '</div>';
+  });
+  box.innerHTML = h;
+}
+/* ============ 词汇页（300 核心词）============ */
+var wGroup = 0;          // 0 = 全部
+var wMode  = 'browse';   // browse | test
+var wQueue = [];         // 自测队列
+var wIdx   = 0;
+
+function renderWords(){
+  if(typeof WORDS === 'undefined') return;
+  // 分组按钮
+  var groups = [];
+  WORDS.forEach(function(x){ if(groups.indexOf(x.g) < 0) groups.push(x.g); });
+  groups.sort(function(a,b){ return a-b; });
+  var g = '<button class="' + (wGroup===0?'on':'') + '" onclick="jumpGroup(0)">全部 ' + WORDS.length + '</button>';
+  groups.forEach(function(x){
+    var cnt = WORDS.filter(function(y){ return y.g===x; }).length;
+    g += '<button class="' + (wGroup===x?'on':'') + '" onclick="jumpGroup(' + x + ')">第 ' + x + ' 组 ' + cnt + '</button>';
+  });
+  document.getElementById('wGroupNav').innerHTML = g;
+  renderWordList();
+}
+function jumpGroup(x){ wGroup = x; renderWords(); }
+function wordMode(m){
+  wMode = m;
+  document.querySelectorAll('#words .card .btn').forEach(function(b,i){
+    b.className = 'btn' + (i === (m==='browse'?0:1) ? ' sm' : ' ghost sm');
+  });
+  document.getElementById('wordTip').innerHTML = (m === 'browse')
+    ? '浏览模式：按组看单词和释义。自测模式：先看单词，想不起来再点「看释义」。'
+    : '自测模式：看单词选释义，选完立刻出对错。<b>错的词会自动多出现一次。</b>';
+  renderWordList();
+}
+function wPool(){
+  return WORDS.filter(function(x){ return wGroup === 0 || x.g === wGroup; });
+}
+function renderWordList(){
+  var list = wPool();
+  var box = document.getElementById('wordList');
+  if(wMode === 'browse'){
+    var h = '';
+    list.forEach(function(x){
+      h += '<div class="wrow"><span class="w">' + x.w + '</span><span class="p">' + x.p + '</span><span class="m">' + x.m + '</span></div>';
+    });
+    box.innerHTML = h;
+    document.getElementById('wTestBody').innerHTML = '<p class="small center">点下面的「🎯 自测模式」，从这 ' + list.length + ' 个词里出题。</p>';
+  } else {
+    if(!wQueue.length){ newWQueue(); }
+    renderWQuestion();
+  }
+}
+function newWQueue(){
+  var p = wPool().slice();
+  for(var i = p.length - 1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var t = p[i]; p[i] = p[j]; p[j] = t; }
+  wQueue = p; wIdx = 0;
+}
+function renderWQuestion(){
+  var box = document.getElementById('wordList');
+  var tb  = document.getElementById('wTestBody');
+  if(wIdx >= wQueue.length){ newWQueue(); }
+  var cur = wQueue[wIdx];
+  if(!cur){ box.innerHTML = ''; tb.innerHTML = '<p class="small center">这一组没有单词。</p>'; return; }
+  var pool = WORDS.filter(function(x){ return x.m !== cur.m; }).slice();
+  var opts = [cur.m];
+  while(opts.length < 4 && pool.length){
+    var k = Math.floor(Math.random()*pool.length);
+    opts.push(pool[k].m); pool.splice(k,1);
+  }
+  for(var i = opts.length - 1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var t = opts[i]; opts[i] = opts[j]; opts[j] = t; }
+  var h = '<div class="small center">第 ' + (wIdx+1) + ' / ' + wQueue.length + ' 题　组别：' + (wGroup===0?'全部':'第'+wGroup+'组') + '</div>';
+  h += '<div class="big">' + cur.w + '　<span style="font-size:13px;color:var(--sub);font-weight:400">' + cur.p + '</span></div>';
+  opts.forEach(function(o, i){
+    h += '<button class="opt" style="width:100%;text-align:left;margin-bottom:6px" onclick="wAnswer(this,' + i + ',\'' + o.replace(/'/g,"\\'") + '\')">' + String.fromCharCode(65+i) + '. ' + o + '</button>';
+  });
+  tb.innerHTML = h;
+  box.innerHTML = '<p class="small center">答完这一题会自动出下一题。想回顾列表？切回「📖 浏览模式」。</p>';
+}
+function wAnswer(btn, i, meaning){
+  var cur = wQueue[wIdx];
+  var ok = (meaning === cur.m);
+  btn.classList.add(ok ? 'right' : 'wrong');
+  document.querySelectorAll('#wTestBody .opt').forEach(function(b){
+    b.disabled = true;
+    if(b.textContent.indexOf('. ' + cur.m) >= 0) b.classList.add('right');
+  });
+  if(!ok){ wQueue.push(cur); }          // 错的加回队尾，多考一次
+  var tip = document.createElement('div');
+  tip.className = 'explain show';
+  tip.innerHTML = (ok ? '✅ 答对了：' : '❌ 答错了：') + '<b>' + cur.w + '</b> ' + cur.p + ' ' + cur.m;
+  document.getElementById('wTestBody').appendChild(tip);
+  wIdx++;
+  setTimeout(function(){ renderWQuestion(); }, ok ? 700 : 1600);
+}
+
+/* ============ DVWA 靶场手册 ============ */
+function showLabTab(which){
+  document.getElementById('paneLabs').style.display = (which === 'labs') ? '' : 'none';
+  document.getElementById('paneDvwa').style.display = (which === 'dvwa') ? '' : 'none';
+  document.getElementById('tabLabs').className = 'btn sm' + (which === 'labs' ? '' : ' ghost');
+  document.getElementById('tabDvwa').className = 'btn sm' + (which === 'dvwa' ? '' : ' ghost');
+  if(which === 'dvwa' && !document.getElementById('dvwaList').innerHTML) renderDvwa();
+  window.scrollTo(0,0);
+}
+function renderDvwa(){
+  var box = document.getElementById('dvwaList');
+  if(typeof DVWA === 'undefined' || !box) return;
+  var h = '';
+  DVWA.forEach(function(d){
+    h += '<div class="lab"><h4>' + d.title + '</h4><div class="meta">' + d.meta + '</div>'
+      + '<div class="goal"><b>目标：</b>' + d.goal + '</div>';
+    if(d.chapters) h += '<p class="small" style="margin-bottom:8px"><b>🔗 ' + d.chapters + '</b></p>';
+    if(d.steps){
+      h += '<div style="margin-top:6px">';
+      d.steps.forEach(function(s,i){ h += '<div class="step"><div class="n">' + (i+1) + '</div><div>' + s + '</div></div>'; });
+      h += '</div>';
+    }
+    if(d.code) h += '<pre class="code">' + hlText(d.code) + '</pre>';
+    if(d.expect) h += '<details open><summary>👀 你应该看到什么（预期现象）</summary><ul style="margin:6px 0 0 20px">'
+      + d.expect.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    var dUndo = Array.isArray(d.undo) ? d.undo : (d.undo ? [d.undo] : null);
+    if(dUndo) h += '<details><summary>↩ 做不到怎么办（降级方案）</summary><ul style="margin:6px 0 0 20px">'
+      + dUndo.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></details>';
+    if(d.why) h += '<details><summary>🎓 这个模块在教你什么</summary><p style="margin-top:6px">' + d.why + '</p></details>';
+    if(d.warn) h += '<div class="warnbox"><b>⚠️ 注意：</b>' + d.warn + '</div>';
+    if(d.tip) h += '<div class="tipbox"><b>💡 提示：</b>' + d.tip + '</div>';
+    h += '</div>';
+  });
+  box.innerHTML = h;
+}
+
+/* ============ 速查 ============ */
+function renderCS(){
+  if(typeof CHEATSHEET === 'undefined') return;
+  var h = '';
+  CHEATSHEET.forEach(function(cat){
+    h += '<div class="cs-cat" data-cat="' + cat.title + '"><h3>' + cat.icon + ' ' + cat.title + '</h3>';
+    cat.items.forEach(function(it){
+      h += '<div class="cs-item" data-k="' + (it.k + ' ' + (it.v||'') + ' ' + (it.ex||'')).replace(/"/g,'') + '"><b>' + it.k + '</b>'
+        + (it.v ? (' — ' + it.v) : '') + (it.ex ? '<span class="ex">例：' + it.ex + '</span>' : '') + '</div>';
+    });
+    h += '</div>';
+  });
+  document.getElementById('csBody').innerHTML = h;
+}
+function filterCS(){
+  var q = document.getElementById('csSearch').value.trim().toLowerCase();
+  document.querySelectorAll('#csBody .cs-item').forEach(function(el){
+    el.style.display = (!q || el.dataset.k.toLowerCase().indexOf(q) >= 0) ? '' : 'none';
+  });
+  document.querySelectorAll('#csBody .cs-cat').forEach(function(cat){
+    var vis = 0;
+    cat.querySelectorAll('.cs-item').forEach(function(el){ if(el.style.display !== 'none') vis++; });
+    cat.style.display = vis ? '' : 'none';
+  });
+}
+
+/* ============ 术语 ============ */
+function renderGloss(){
+  if(typeof GLOSSARY === 'undefined') return;
+  var h = '';
+  GLOSSARY.forEach(function(g){
+    h += '<div class="gloss" data-k="' + (g.term + ' ' + (g.en||'') + ' ' + g.def).replace(/"/g,'') + '">'
+      + '<h4>' + g.term + ' <span class="en">' + (g.en||'') + '</span></h4>'
+      + '<p>' + g.def + '</p>'
+      + (g.rel ? '<div class="rel">🔗 ' + g.rel + '</div>' : '') + '</div>';
+  });
+  document.getElementById('glBody').innerHTML = h;
+}
+function filterGloss(){
+  var q = document.getElementById('glSearch').value.trim().toLowerCase();
+  document.querySelectorAll('#glBody .gloss').forEach(function(el){
+    el.style.display = (!q || el.dataset.k.toLowerCase().indexOf(q) >= 0) ? '' : 'none';
+  });
+}
+
+/* ============ 启动 ============ */
+document.querySelectorAll('#bottomNav div').forEach(function(d){
+  d.addEventListener('click', function(){
+    var s = d.dataset.sec;
+    if(s === 'quiz' && !document.getElementById('qnav').innerHTML) renderQuizNav();
+    if(s === 'lab' && !document.getElementById('labList').innerHTML) renderLabs();
+    if(s === 'words' && !document.getElementById('wGroupNav').innerHTML) renderWords();
+    if(s === 'cheatsheet' && !document.getElementById('csBody').innerHTML) renderCS();
+    if(s === 'gloss' && !document.getElementById('glBody').innerHTML) renderGloss();
+    setSec(s);
+  });
+});
+renderHome();
+renderCourse();
+renderQuizNav();
+renderWords();
+</script>
+</body>
+</html>

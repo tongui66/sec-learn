@@ -52,8 +52,8 @@ code{background:#f1f2f4;border-radius:4px;padding:1px 5px;font-family:Consolas,m
 <body>
 
 <header>
-  <h1>🛡 网安学习台</h1>
-  <div class="sub">防火墙 · MySQL · PHP 代码审计 · Python 代码审计——四门课，一个入口</div>
+<h1>📚 学习台</h1>
+  <div class="sub">防火墙 · MySQL · PHP 代码审计 · Python 代码审计 · 英语四级——五门课，一个入口</div>
   <div class="total">
     <div class="num"><span id="allDone">0</span><small> / <span id="allTotal">0</span> 章已学</small></div>
     <div class="bar"><i id="allBar" style="width:0%"></i></div>
@@ -113,7 +113,7 @@ code{background:#f1f2f4;border-radius:4px;padding:1px 5px;font-family:Consolas,m
     <h2>🔧 部署与更新说明</h2>
     <ol>
       <li>这套站点是<b>纯静态</b>的（没有后端、没有外部依赖），已部署在 GitHub Pages：<code>tongui66.github.io/sec-learn/</code>。</li>
-      <li>四个子目录：<code>firewall/</code>（防火墙）、<code>mysql/</code>（MySQL）、<code>php/</code>（PHP）、<code>python/</code>（Python）。本页是总入口。</li>
+      <li>五个子目录：<code>firewall/</code>（防火墙）、<code>mysql/</code>（MySQL）、<code>php/</code>（PHP）、<code>python/</code>（Python）、<code>english/</code>（英语四级）。本页是总入口。</li>
       <li>以后更新：在课程目录执行 <code>git add -A &amp;&amp; git commit &amp;&amp; git push</code>，GitHub 会自动重新构建。进度数据不受影响（它存在浏览器里，不在文件里）。</li>
     </ol>
   </div>
@@ -131,6 +131,8 @@ var COURSES = [
     desc:'语言基础 → 七大漏洞 → 审计工程 → 实战交付。含 12 个实验 + 8 个靶场模块 + 15 个可运行示例。' }
   ,{ dir:'python', name:'Python 代码审计', icon:'🐍', color:'#3776ab', key:'py', ch:20,
     desc:'语言基础 → 标准库与工程 → 四类高危漏洞 → 实战与报告。含 12 个实验 + 10 段审计靶场 + 14 个可运行示例。' }
+  ,{ dir:'english', name:'英语四级 · 精通道', icon:'🎓', color:'#b45309', key:'en', ch:20,
+    desc:'语音词汇 → 语法体系 → 四大题型 → 翻译实战。含 12 个专项训练 + 10 组实战演练 + 300 核心词。' }
 ];
 
 function $(id){ return document.getElementById(id); }
@@ -174,7 +176,7 @@ function render(){
   $('allBar').style.width = (allTotal ? Math.round(allDone / allTotal * 100) : 0) + '%';
   $('allTip').textContent = allDone === 0
     ? '还没开始——从下面任意一门进去，学完一章会自动记录进度。'
-    : '四门课合计已学 ' + allDone + ' 章，继续加油。';
+    : '五门课合计已学 ' + allDone + ' 章，继续加油。';
 }
 
 /* ── 进度导出 / 导入 ── */
@@ -182,7 +184,7 @@ function exportProgress(){
   var out = {};
   for (var i = 0; i < localStorage.length; i++){
     var k = localStorage.key(i);
-    if (/^(fw_|mysql_|php_|py_)/.test(k)) out[k] = localStorage.getItem(k);
+    if (/^(fw_|mysql_|php_|py_|en_)/.test(k)) out[k] = localStorage.getItem(k);
   }
   if (!Object.keys(out).length){ toast('本机还没有任何学习进度'); return; }
   var payload = { app:'网安学习台', version:1, exportedAt:new Date().toISOString(), data:out };
@@ -198,7 +200,7 @@ function importProgress(){
   if (!obj || !obj.data || typeof obj.data !== 'object'){ toast('这段文本里没有进度数据'); return; }
   var n = 0;
   Object.keys(obj.data).forEach(function(k){
-    if (/^(fw_|mysql_|php_|py_)/.test(k)){ localStorage.setItem(k, obj.data[k]); n++; }
+    if (/^(fw_|mysql_|php_|py_|en_)/.test(k)){ localStorage.setItem(k, obj.data[k]); n++; }
   });
   toast('已导入 ' + n + ' 项进度，页面即将刷新');
   setTimeout(function(){ location.reload(); }, 1200);
@@ -224,7 +226,7 @@ function clearAll(){
   var ks = [];
   for (var i = 0; i < localStorage.length; i++){
     var k = localStorage.key(i);
-    if (/^(fw_|mysql_|php_|py_)/.test(k)) ks.push(k);
+    if (/^(fw_|mysql_|php_|py_|en_)/.test(k)) ks.push(k);
   }
   ks.forEach(function(k){ localStorage.removeItem(k); });
   toast('已清空 ' + ks.length + ' 项，页面即将刷新');
